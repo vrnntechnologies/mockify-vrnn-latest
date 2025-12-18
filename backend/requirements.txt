@@ -1,0 +1,8 @@
+fastapi
+uvicorn
+requests
+pdfplumber
+docx2txt
+werkzeug
+flask
+flask-cors

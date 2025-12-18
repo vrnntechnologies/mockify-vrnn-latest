@@ -1,0 +1,234 @@
+{
+    "single": [
+        {
+            "filename": "Profile_1.pdf",
+            "analysis": {
+                "ats_score": 80,
+                "skills": [
+                    "Java",
+                    "Spring Boot",
+                    "Microservices",
+                    "Thymeleaf",
+                    "Spring MVC",
+                    "Python",
+                    "Machine learning",
+                    "Data-Science"
+                ],
+                "summary": "Software engineer with experience in backend development, microservices architecture, and containerization. Strong foundation in problem-solving and test automation.",
+                "improvements": [
+                    "Consider adding more specific metrics to quantify the impact of projects (e.g., 'Improved API performance by 30%'),",
+                    "Include a separate section for certifications to highlight relevant training and education"
+                ]
+            },
+            "timestamp": "2025-12-18 13:54:38"
+        }
+    ],
+    "batch": [
+        {
+            "type": "fast",
+            "files_processed": 19,
+            "top_n_requested": 19,
+            "results": [
+                {
+                    "filename": "Profile_2.pdf",
+                    "score": 95,
+                    "summary": "Perfect Fit. The resume is for the AI/ML Engineer role, with a strong emphasis on Python skills and relevant experience."
+                },
+                {
+                    "filename": "Profile_10.pdf",
+                    "score": 92,
+                    "summary": "Perfect Fit. Matches the AI/ML Engineer role, has strong python skills, and approx 1-2 years of relevant experience."
+                },
+                {
+                    "filename": "Profile_14.pdf",
+                    "score": 85,
+                    "summary": "Good Fit. Matches role, strong python skills, and relevant experience."
+                },
+                {
+                    "filename": "Profile_1.pdf",
+                    "score": 65,
+                    "summary": "Good fit, but lacking sufficient python experience and projects. Candidate has some backend development experience, but it's not primarily in AI/ML. Experience is mostly general software engineering with little to no focus on AI/ML."
+                },
+                {
+                    "filename": "Profile_9.pdf",
+                    "score": 65,
+                    "summary": "Good Fit. Candidate matches AI/ML Engineer role and has strong python skills. However, experience is limited to 9 months as a Python Developer, which falls below the required 1-2 years for a professional."
+                },
+                {
+                    "filename": "Profile_7.pdf",
+                    "score": 40,
+                    "summary": "The candidate has a mismatched role and lacks significant python experience. While they have some exposure to machine learning concepts, their professional experience is not relevant to the AI/ML Engineer role."
+                },
+                {
+                    "filename": "Profile_8.pdf",
+                    "score": 40,
+                    "summary": "Weak python skills and insufficient experience"
+                },
+                {
+                    "filename": "Profile_12.pdf",
+                    "score": 40,
+                    "summary": "Candidate does not meet the critical requirement of python being a main language. Although they claim to know Python, it's not explicitly stated in the top skills section. Additionally, experience is slightly above the minimum requirement, but this is not enough to compensate for the lack of emphasis on python."
+                },
+                {
+                    "filename": "Profile_13.pdf",
+                    "score": 40,
+                    "summary": "Candidate does not meet the technical requirements for the AI/ML Engineer role. While they have some relevant skills like Python, their experience is mainly in non-technical roles (Marketing and Teaching Assistant) with no direct involvement in AI/ML projects."
+                },
+                {
+                    "filename": "Profile_11.pdf",
+                    "score": 35,
+                    "summary": "While the candidate has a strong background in computer science and engineering, they do not explicitly mention Python as one of their skills. Although they have experience with Deep Learning, it's unclear if this is related to Python or another language."
+                },
+                {
+                    "filename": "Profile_4.pdf",
+                    "score": 30,
+                    "summary": "Weak fit due to lack of direct AI/ML experience and no mention of python. Also, the candidate has more than 2 years of experience in iOS development, which is outside the required scope."
+                },
+                {
+                    "filename": "Profile_5.pdf",
+                    "score": 30,
+                    "summary": "Does not match target role. Although the candidate has a strong background in engineering and leadership, there is no indication of AI/ML expertise or experience in this field. The main language required for the target role is Python, which is not mentioned at all."
+                },
+                {
+                    "filename": "Profile_15.pdf",
+                    "score": 25,
+                    "summary": "Weak: Missing key skills like python. Candidate is applying for a role as an AI/ML Engineer but has no mention of python in the resume. Experience and projects mentioned are not relevant to the target role."
+                },
+                {
+                    "filename": "Profile_18.pdf",
+                    "score": 15,
+                    "summary": "Instant Reject due to incorrect role. The resume is for a Computer Science Engineer with interests in Data Analysis, C, C++, and AI, but does not mention AI/ML Engineer as the target role."
+                },
+                {
+                    "filename": "Profile_6.pdf",
+                    "score": 10,
+                    "summary": "WRONG ROLE: This candidate is a student with minimal skills in SQL, HTML, and JavaScript. The resume does not even mention python, which is a critical requirement for the AI/ML Engineer role."
+                },
+                {
+                    "filename": "Profile_17.pdf",
+                    "score": 10,
+                    "summary": "Wrong Role. Candidate is a Computer Science Student and doesn't have relevant work experience or professional background for AI/ML Engineer role."
+                },
+                {
+                    "filename": "Profile_3.pdf",
+                    "score": 0,
+                    "summary": "WRONG ROLE: The resume is for a Software Engineer role, not AI/ML Engineer. No mention of python, which is critical for the target role."
+                },
+                {
+                    "filename": "Profile_16.pdf",
+                    "score": 0,
+                    "summary": "WRONG ROLE: This candidate's resume is for a computer science student and aspiring data analyst, not an AI/ML Engineer. Instant reject."
+                },
+                {
+                    "filename": "Profile.pdf",
+                    "score": 0,
+                    "summary": "Wrong Role: This candidate's resume is for a Jr. Research Analyst/Marketing role, not an AI/ML Engineer. No python skills or experience in AI/ML are mentioned."
+                }
+            ],
+            "timestamp": "2025-12-18 14:44:35"
+        },
+        {
+            "type": "fast",
+            "files_processed": 19,
+            "top_n_requested": 19,
+            "results": [
+                {
+                    "filename": "Profile_10.pdf",
+                    "score": 85,
+                    "summary": "Good Fit. Strong python skills and significant project work. Minor experience gap."
+                },
+                {
+                    "filename": "Profile_9.pdf",
+                    "score": 83,
+                    "summary": "Good Fit. Strong python skills and relevant projects demonstrate a good understanding of backend engineering concepts."
+                },
+                {
+                    "filename": "Profile_2.pdf",
+                    "score": 80,
+                    "summary": "Good Fit. Candidate matches the role, has a strong python background, and some relevant projects listed."
+                },
+                {
+                    "filename": "Profile_7.pdf",
+                    "score": 75,
+                    "summary": "Good Fit. Candidate matches the role, but lacks significant project work and has limited python experience."
+                },
+                {
+                    "filename": "Profile_15.pdf",
+                    "score": 75,
+                    "summary": "Good Fit. Matches Role but lacks significant project work and experience in python."
+                },
+                {
+                    "filename": "Profile_1.pdf",
+                    "score": 70,
+                    "summary": "Good Fit. Matches Role but lacks significant project work and has a weak python foundation."
+                },
+                {
+                    "filename": "Profile_4.pdf",
+                    "score": 60,
+                    "summary": "Good Fit. While the candidate has experience as an iOS Developer, they lack significant project work and Python expertise is not demonstrated."
+                },
+                {
+                    "filename": "Profile_11.pdf",
+                    "score": 60,
+                    "summary": "Good Fit. Matches Role as Software Engineer. Python experience is weak, but not missing. No significant projects/hackathons/internships listed, which penalizes the score."
+                },
+                {
+                    "filename": "Profile_13.pdf",
+                    "score": 60,
+                    "summary": "Good Fit. Matches Role. Strong foundation in Python, but lacks significant project work. Weaknesses: No backend engineering experience, marketing roles listed instead of development projects."
+                },
+                {
+                    "filename": "Profile_14.pdf",
+                    "score": 60,
+                    "summary": "Good Fit. While the candidate has some experience in machine learning and AI, there is no explicit mention of Python skills or projects that demonstrate their proficiency in backend engineering. Additionally, some irrelevant internship experiences are listed."
+                },
+                {
+                    "filename": "Profile_8.pdf",
+                    "score": 50,
+                    "summary": "Good Fit for Backend Engineer role. Strong experience in various roles and projects, but lacks direct python programming or projects. Needs to demonstrate python skills and projects/hackathons to increase score."
+                },
+                {
+                    "filename": "Profile_3.pdf",
+                    "score": 40,
+                    "summary": "Candidate does not meet the critical requirement of knowing Python. Although they have experience in software development and various certifications, their skills are not relevant to the target role of Backend Engineer."
+                },
+                {
+                    "filename": "Profile_6.pdf",
+                    "score": 40,
+                    "summary": "This candidate does not have the required main language, python. Although they mention SQL, HTML, and JavaScript as their top skills, this is a backend engineer role that requires strong proficiency in python."
+                },
+                {
+                    "filename": "Profile_12.pdf",
+                    "score": 40,
+                    "summary": "Weak python skills and lack of significant projects/hackathons. Although the candidate has experience with Python, it's not explicitly stated as a primary skill or language. Additionally, there are no notable projects or hackathons listed, which is a critical aspect for a fresher candidate."
+                },
+                {
+                    "filename": "Profile_16.pdf",
+                    "score": 40,
+                    "summary": "Weak python skills and lack of projects/hackathons/internships make this candidate a weak fit for the Backend Engineer role."
+                },
+                {
+                    "filename": "Profile_18.pdf",
+                    "score": 40,
+                    "summary": "Weak python knowledge, no projects listed. Meets role requirements but lacks critical skills."
+                },
+                {
+                    "filename": "Profile_17.pdf",
+                    "score": 30,
+                    "summary": "Incorrect Role. This candidate is a computer science student and lacks experience in Backend Engineering. Python skills are also not explicitly mentioned."
+                },
+                {
+                    "filename": "Profile_5.pdf",
+                    "score": 20,
+                    "summary": "Candidate does not match the role criteria. The resume is for a Senior Engineering Leader, not a Backend Engineer. Additionally, there is no mention of Python language proficiency, which is critical for this role."
+                },
+                {
+                    "filename": "Profile.pdf",
+                    "score": 0,
+                    "summary": "WRONG ROLE: Candidate is not a Backend Engineer. This resume is for Research Analyst and Marketing roles."
+                }
+            ],
+            "timestamp": "2025-12-18 13:58:25"
+        }
+    ]
+}

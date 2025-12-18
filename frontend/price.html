@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pricing - Mockify AI</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Font (Inter) -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #000; color: white; }
+        
+        /* Shimmer Animation for Title */
+        @keyframes shine {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 200% 50%; }
+        }
+        .animate-shine {
+            background: linear-gradient(to right, #a855f7, #ffffff, #a855f7);
+            background-size: 200% auto;
+            color: transparent;
+            -webkit-background-clip: text;
+            background-clip: text;
+            animation: shine 3s linear infinite;
+        }
+
+        /* Glassmorphism */
+        .glass-card {
+            background: rgba(17, 24, 39, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+    </style>
+</head>
+<body class="overflow-x-hidden">
+
+    <!-- HEADER -->
+    <header class="fixed top-0 w-full z-50 pt-6 px-6 pointer-events-none">
+        <div class="max-w-7xl mx-auto flex items-center justify-between relative">
+            
+            <!-- Left: Logo -->
+            <div class="pointer-events-auto">
+                <a href="index.html">
+                    <img src="logo.png" onerror="this.src='https://placehold.co/120x80/333/FFF?text=Logo'" alt="Mockify AI" class="h-24 w-auto hover:opacity-90 transition-opacity">
+                </a>
+            </div>
+            
+            <!-- Center: Nav Bar -->
+            <nav class="pointer-events-auto hidden md:flex items-center gap-8 bg-white/5 backdrop-blur-md border border-white/10 px-8 py-3 rounded-full absolute left-1/2 -translate-x-1/2 whitespace-nowrap">
+                <a href="index.html" class="text-sm font-medium text-slate-300 hover:text-white transition-colors">Home</a>
+                <a href="aboutus.html" class="text-sm font-medium text-slate-300 hover:text-white transition-colors">About Us</a>
+                
+                <!-- FEATURES MEGA MENU -->
+                <div class="relative group">
+                    <button class="text-sm font-medium text-slate-300 hover:text-white transition-colors flex items-center gap-1 outline-none">
+                        Our Feature <i data-lucide="chevron-down" class="w-4 h-4 transition-transform group-hover:rotate-180"></i>
+                    </button>
+                    
+                    <!-- Mega Menu Dropdown -->
+                    <div class="absolute top-full left-1/2 -translate-x-1/2 mt-8 w-[900px] bg-[#0a0a0f] backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl p-6 opacity-0 invisible translate-y-[-20px] group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 transition-all duration-300 ease-out z-[60] grid grid-cols-3 gap-6">
+                        
+                        <!-- Card 1 -->
+                        <div class="group/card relative h-64 rounded-xl overflow-hidden cursor-pointer border border-white/5 hover:border-purple-500/50 transition-colors bg-black">
+                            <img src="img1.jpg" onerror="this.src='https://placehold.co/300x400/1a1a1a/FFF?text=AI+Simulation'" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover/card:scale-110 opacity-60 group-hover/card:opacity-40">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent"></div>
+                            <div class="absolute bottom-0 left-0 p-5 w-full">
+                                <div class="flex items-center gap-2 mb-1">
+                                    <div class="w-2 h-2 rounded-full bg-purple-500 opacity-0 -translate-x-4 group-hover/card:opacity-100 group-hover/card:translate-x-0 transition-all duration-300"></div>
+                                    <h4 class="text-white font-bold text-lg group-hover/card:translate-x-1 transition-transform duration-300">AI Simulation</h4>
+                                </div>
+                                <p class="text-slate-400 text-xs leading-relaxed">Experience realistic interview scenarios.</p>
+                            </div>
+                        </div>
+
+                        <!-- Card 2 -->
+                        <div class="group/card relative h-64 rounded-xl overflow-hidden cursor-pointer border border-white/5 hover:border-purple-500/50 transition-colors bg-black">
+                            <img src="img2.jpg" onerror="this.src='https://placehold.co/300x400/1a1a1a/FFF?text=Questions'" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover/card:scale-110 opacity-60 group-hover/card:opacity-40">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent"></div>
+                            <div class="absolute bottom-0 left-0 p-5 w-full">
+                                <div class="flex items-center gap-2 mb-1">
+                                    <div class="w-2 h-2 rounded-full bg-purple-500 opacity-0 -translate-x-4 group-hover/card:opacity-100 group-hover/card:translate-x-0 transition-all duration-300"></div>
+                                    <h4 class="text-white font-bold text-lg group-hover/card:translate-x-1 transition-transform duration-300">Top 150 Questions</h4>
+                                </div>
+                                <p class="text-slate-400 text-xs leading-relaxed">Master the most frequently asked coding problems.</p>
+                            </div>
+                        </div>
+
+                        <!-- Card 3 -->
+                        <div class="group/card relative h-64 rounded-xl overflow-hidden cursor-pointer border border-white/5 hover:border-purple-500/50 transition-colors bg-black">
+                            <img src="resume.png" onerror="this.src='https://placehold.co/300x400/1a1a1a/FFF?text=Resume'" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover/card:scale-110 opacity-60 group-hover/card:opacity-40">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent"></div>
+                            <div class="absolute bottom-0 left-0 p-5 w-full">
+                                <div class="flex items-center gap-2 mb-1">
+                                    <div class="w-2 h-2 rounded-full bg-purple-500 opacity-0 -translate-x-4 group-hover/card:opacity-100 group-hover/card:translate-x-0 transition-all duration-300"></div>
+                                    <h4 class="text-white font-bold text-lg group-hover/card:translate-x-1 transition-transform duration-300">Resume Analyser</h4>
+                                </div>
+                                <p class="text-slate-400 text-xs leading-relaxed">Get instant feedback on your resume.</p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <a href="price.html" class="text-sm font-medium text-white transition-colors">Pricing</a>
+                <a href="interview.html" id="nav-dashboard" class="text-sm font-medium text-indigo-400 hover:text-indigo-300 transition-colors hidden">Dashboard</a>
+            </nav>
+
+            <!-- Right: Login Button -->
+            <div class="pointer-events-auto">
+                <button id="loginBtn" onclick="handleAuthClick()" class="px-6 py-2 rounded-full border border-white/20 bg-black/50 backdrop-blur-sm hover:bg-white/10 text-white font-medium transition-all text-sm">
+                    Log In
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- LOGIN MODAL -->
+    <div id="loginModal" class="fixed inset-0 z-[100] hidden items-center justify-center bg-black/80 backdrop-blur-sm">
+        <div class="bg-slate-900 border border-slate-700 p-8 rounded-2xl w-full max-w-md relative shadow-2xl">
+            <button onclick="closeLoginModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white">
+                <i data-lucide="x" class="w-6 h-6"></i>
+            </button>
+            <h2 class="text-2xl font-bold mb-6 text-center">Login</h2>
+            <form id="loginForm" onsubmit="handleLoginSubmit(event)" class="space-y-4">
+                <div>
+                    <label class="block text-sm text-slate-400 mb-1">Username</label>
+                    <input type="text" id="username" class="w-full bg-black border border-slate-700 rounded-lg p-3 focus:outline-none focus:border-indigo-500" placeholder="admin">
+                </div>
+                <div>
+                    <label class="block text-sm text-slate-400 mb-1">Password</label>
+                    <input type="password" id="password" class="w-full bg-black border border-slate-700 rounded-lg p-3 focus:outline-none focus:border-indigo-500" placeholder="••••••••">
+                </div>
+                <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3 rounded-lg mt-4 transition-colors">
+                    Login
+                </button>
+                
+                <div class="relative my-4">
+                    <div class="absolute inset-0 flex items-center">
+                        <div class="w-full border-t border-slate-700"></div>
+                    </div>
+                    <div class="relative flex justify-center text-xs uppercase">
+                        <span class="bg-slate-900 px-2 text-slate-500">Or try it out</span>
+                    </div>
+                </div>
+
+                <button type="button" onclick="handleDemoLogin()" class="w-full bg-white/10 hover:bg-white/20 text-white font-bold py-3 rounded-lg border border-white/10 transition-colors flex items-center justify-center gap-2">
+                    <i data-lucide="play-circle" class="w-4 h-4"></i> Free Demo Login
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- PRICING SECTION -->
+    <section class="min-h-screen pt-32 pb-24 px-6 relative">
+        <!-- Background Elements -->
+        <div class="absolute top-20 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-purple-900/20 rounded-full blur-[100px] -z-10"></div>
+
+        <div class="max-w-7xl mx-auto">
+            <!-- Header -->
+            <div class="text-center mb-16 space-y-4">
+                <h1 class="text-4xl md:text-5xl font-bold animate-shine">
+                    Simple, Transparent Pricing
+                </h1>
+                <p class="text-gray-400 text-lg">Choose the plan that fits your preparation needs.</p>
+            </div>
+
+            <!-- Grid -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-center">
+                
+                <!-- CARD A: Starter -->
+                <div class="glass-card rounded-3xl p-8 hover:border-purple-500 transition-all duration-300 h-fit">
+                    <h3 class="text-xl font-bold text-white mb-2">Starter</h3>
+                    <div class="flex items-baseline gap-1 mb-6">
+                        <span class="text-4xl font-bold text-white">₹0</span>
+                        <span class="text-sm text-gray-400">/mo</span>
+                    </div>
+                    
+                    <ul class="space-y-4 mb-8">
+                        <li class="flex items-center gap-3">
+                            <i data-lucide="check" class="w-5 h-5 text-green-500"></i>
+                            <span class="text-sm text-gray-300">1 Mock Interview / Day</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <i data-lucide="check" class="w-5 h-5 text-green-500"></i>
+                            <span class="text-sm text-gray-300">Basic Feedback</span>
+                        </li>
+                    </ul>
+
+                    <button class="w-full py-3 rounded-xl border border-white/10 text-white font-medium hover:bg-white/5 transition-colors">
+                        Get Started
+                    </button>
+                </div>
+
+                <!-- CARD B: Pro (Highlighted) -->
+                <div class="bg-[#0f0f13] rounded-3xl p-8 border border-purple-500 shadow-[0_0_40px_rgba(168,85,247,0.2)] transform scale-105 relative overflow-hidden">
+                    <!-- Top Line -->
+                    <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-purple-600 to-blue-600"></div>
+                    
+                    <div class="flex justify-between items-start mb-4">
+                        <h3 class="text-xl font-bold text-white">Pro</h3>
+                        <span class="bg-purple-600 text-white text-[10px] font-bold px-2 py-1 rounded-full uppercase tracking-wide">Most Popular</span>
+                    </div>
+
+                    <div class="flex items-baseline gap-1 mb-6">
+                        <span class="text-4xl font-bold text-white">₹499</span>
+                        <span class="text-sm text-gray-400">/mo</span>
+                    </div>
+                    
+                    <ul class="space-y-4 mb-8">
+                        <li class="flex items-center gap-3">
+                            <i data-lucide="check" class="w-5 h-5 text-purple-400"></i>
+                            <span class="text-sm text-gray-300">Unlimited Interviews</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <i data-lucide="check" class="w-5 h-5 text-purple-400"></i>
+                            <span class="text-sm text-gray-300">Detailed Performance Analytics</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <i data-lucide="check" class="w-5 h-5 text-purple-400"></i>
+                            <span class="text-sm text-gray-300">AI Resume Review</span>
+                        </li>
+                    </ul>
+
+                    <button class="w-full py-3 rounded-xl bg-purple-600 hover:bg-purple-700 text-white font-bold transition-colors shadow-lg shadow-purple-500/25">
+                        Subscribe Now
+                    </button>
+                </div>
+
+                <!-- CARD C: Expert Yearly -->
+                <div class="glass-card rounded-3xl p-8 hover:border-purple-500 transition-all duration-300 h-fit">
+                    <h3 class="text-xl font-bold text-white mb-2">Expert Yearly</h3>
+                    <div class="flex items-baseline gap-1 mb-1">
+                        <span class="text-4xl font-bold text-white">₹4999</span>
+                        <span class="text-sm text-gray-400">/yr</span>
+                    </div>
+                    <p class="text-green-400 text-xs font-semibold mb-6">Save ₹1000 yearly</p>
+                    
+                    <ul class="space-y-4 mb-8">
+                        <li class="flex items-center gap-3">
+                            <i data-lucide="check" class="w-5 h-5 text-green-500"></i>
+                            <span class="text-sm text-gray-300">All Pro Features</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <i data-lucide="check" class="w-5 h-5 text-green-500"></i>
+                            <span class="text-sm text-gray-300">Priority Support</span>
+                        </li>
+                    </ul>
+
+                    <button class="w-full py-3 rounded-xl border border-white/10 text-white font-medium hover:bg-white/5 transition-colors">
+                        Choose Yearly
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="bg-black border-t border-white/10 py-16">
+        <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-12">
+            
+            <!-- Brand -->
+            <div class="col-span-1 md:col-span-2 space-y-4">
+                <img src="logo.png" onerror="this.src='https://placehold.co/120x80/333/FFF?text=Logo'" alt="Mockify AI" class="h-24 w-auto">
+                <p class="text-slate-400 text-sm max-w-sm">
+                    Revolutionizing interview preparation with AI-driven insights and realistic simulations. Master your skills and land your dream job.
+                </p>
+            </div>
+
+            <!-- Contact Us -->
+            <div class="col-span-1 space-y-4">
+                <h4 class="text-white font-bold text-lg">Contact Us</h4>
+                <div class="flex flex-col gap-3">
+                    <a href="https://wa.me/919483937558" target="_blank" class="flex items-center gap-3 text-slate-400 hover:text-green-400 transition-colors">
+                        <i data-lucide="message-circle" class="w-5 h-5"></i> WhatsApp
+                    </a>
+                    <a href="https://x.com/OShiravalk61256" target="_blank" class="flex items-center gap-3 text-slate-400 hover:text-blue-400 transition-colors">
+                        <i data-lucide="twitter" class="w-5 h-5"></i> X (Twitter)
+                    </a>
+                    <a href="https://www.linkedin.com/in/swayam-khangaonkar-227bab345" target="_blank" class="flex items-center gap-3 text-slate-400 hover:text-blue-600 transition-colors">
+                        <i data-lucide="linkedin" class="w-5 h-5"></i> LinkedIn
+                    </a>
+                    <a href="https://www.instagram.com/kswayammmm?igsh=MXE1cDZndGJyODQyMw==" target="_blank" class="flex items-center gap-3 text-slate-400 hover:text-pink-500 transition-colors">
+                        <i data-lucide="instagram" class="w-5 h-5"></i> Instagram
+                    </a>
+                </div>
+            </div>
+
+            <!-- Links -->
+            <div class="col-span-1 space-y-4">
+                <h4 class="text-white font-bold text-lg">Quick Links</h4>
+                <div class="flex flex-col gap-3">
+                    <a href="index.html" class="text-slate-400 hover:text-white transition-colors">Home</a>
+                    <a href="aboutus.html" class="text-slate-400 hover:text-white transition-colors">About Us</a>
+                    <a href="index.html#features" class="text-slate-400 hover:text-white transition-colors">Features</a>
+                    <a href="price.html" class="text-slate-400 hover:text-white transition-colors">Pricing</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="max-w-7xl mx-auto px-6 mt-12 pt-8 border-t border-white/5 text-center text-slate-600 text-sm">
+            &copy; 2024 Mockify AI. All rights reserved.
+        </div>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+
+        // --- Auth Logic ---
+        let isLoggedIn = false;
+        const loginBtn = document.getElementById('loginBtn');
+        const navDashboard = document.getElementById('nav-dashboard');
+
+        // Check login state on load
+        if (localStorage.getItem('isLoggedIn') === 'true') {
+            isLoggedIn = true;
+            loginBtn.innerText = "Log Out";
+            navDashboard.classList.remove('hidden');
+        }
+
+        function handleAuthClick() {
+            if (isLoggedIn) {
+                // Logout Logic
+                isLoggedIn = false;
+                localStorage.setItem('isLoggedIn', 'false');
+                loginBtn.innerText = "Log In";
+                navDashboard.classList.add('hidden');
+                alert("Logged out successfully.");
+            } else {
+                openLoginModal();
+            }
+        }
+
+        function openLoginModal() {
+            document.getElementById('loginModal').classList.remove('hidden');
+            document.getElementById('loginModal').classList.add('flex');
+        }
+
+        function closeLoginModal() {
+            document.getElementById('loginModal').classList.add('hidden');
+            document.getElementById('loginModal').classList.remove('flex');
+        }
+
+        function handleLoginSubmit(e) {
+            e.preventDefault();
+            const u = document.getElementById('username').value;
+            const p = document.getElementById('password').value;
+
+            if (u === 'admin' && p === 'admin123') {
+                performLogin();
+            } else {
+                alert("Invalid Credentials. Please try again.");
+            }
+        }
+
+        function handleDemoLogin() {
+            performLogin();
+        }
+
+        function performLogin() {
+            isLoggedIn = true;
+            localStorage.setItem('isLoggedIn', 'true');
+            loginBtn.innerText = "Log Out";
+            navDashboard.classList.remove('hidden'); // Show dashboard
+            alert("Login Successful! Welcome.");
+            closeLoginModal();
+            document.getElementById('username').value = '';
+            document.getElementById('password').value = '';
+            // Optional: Auto redirect
+            // window.location.href = 'interview.html';
+        }
+
+        document.getElementById('loginModal').addEventListener('click', (e) => {
+            if (e.target.id === 'loginModal') closeLoginModal();
+        });
+        
+    </script>
+    
+    <!-- Global Config -->
+    <script src="js/config.js"></script>
+
+    <!-- API Handler -->
+    <script src="js/api.js"></script>
+
+    <!-- AI Router -->
+    <script src="js/aiRouter.js"></script>
+
+    <script src="js/auth.js"></script>
+</body>
+</html>

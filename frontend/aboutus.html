@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - Mockify AI</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Font (Inter) -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #000; color: white; }
+        
+        /* Frame Styles */
+        .glass-frame {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Gradient Text Animation for Roadmap Headers */
+        @keyframes shine {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 200% 50%; }
+        }
+        .animate-shine {
+            background: linear-gradient(to right, #a855f7, #ffffff, #a855f7);
+            background-size: 200% auto;
+            color: transparent;
+            -webkit-background-clip: text;
+            background-clip: text;
+            animation: shine 3s linear infinite;
+        }
+    </style>
+</head>
+<body class="overflow-x-hidden">
+
+    <!-- HEADER -->
+    <header class="fixed top-0 w-full z-50 pt-6 px-6 pointer-events-none">
+        <div class="max-w-7xl mx-auto flex items-center justify-between relative">
+            
+            <!-- Left: Logo -->
+            <div class="pointer-events-auto">
+                <a href="index.html">
+                    <img src="logo.png" onerror="this.src='https://placehold.co/120x80/333/FFF?text=Logo'" alt="Mockify AI" class="h-24 w-auto hover:opacity-90 transition-opacity">
+                </a>
+            </div>
+            
+            <!-- Center: Nav Bar -->
+            <nav class="pointer-events-auto hidden md:flex items-center gap-8 bg-white/5 backdrop-blur-md border border-white/10 px-8 py-3 rounded-full absolute left-1/2 -translate-x-1/2 whitespace-nowrap">
+                <a href="index.html" class="text-sm font-medium text-slate-300 hover:text-white transition-colors">Home</a>
+                <a href="aboutus.html" class="text-sm font-medium text-white transition-colors">About Us</a>
+                
+                <!-- FEATURES MEGA MENU (Same as Home) -->
+                <div class="relative group">
+                    <button class="text-sm font-medium text-slate-300 hover:text-white transition-colors flex items-center gap-1 outline-none">
+                        Our Feature <i data-lucide="chevron-down" class="w-4 h-4 transition-transform group-hover:rotate-180"></i>
+                    </button>
+                    
+                    <div class="absolute top-full left-1/2 -translate-x-1/2 mt-8 w-[900px] bg-[#0a0a0f] backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl p-6 opacity-0 invisible translate-y-[-20px] group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 transition-all duration-300 ease-out z-[60] grid grid-cols-3 gap-6">
+                        <div class="group/card relative h-64 rounded-xl overflow-hidden cursor-pointer border border-white/5 hover:border-purple-500/50 transition-colors bg-black">
+                            <img src="img1.jpg" onerror="this.src='https://placehold.co/300x400/1a1a1a/FFF?text=AI+Simulation'" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover/card:scale-110 opacity-60 group-hover/card:opacity-40">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent"></div>
+                            <div class="absolute bottom-0 left-0 p-5 w-full">
+                                <div class="flex items-center gap-2 mb-1">
+                                    <div class="w-2 h-2 rounded-full bg-purple-500 opacity-0 -translate-x-4 group-hover/card:opacity-100 group-hover/card:translate-x-0 transition-all duration-300"></div>
+                                    <h4 class="text-white font-bold text-lg group-hover/card:translate-x-1 transition-transform duration-300">AI Simulation</h4>
+                                </div>
+                                <p class="text-slate-400 text-xs leading-relaxed">Experience realistic interview scenarios.</p>
+                            </div>
+                        </div>
+                        <div class="group/card relative h-64 rounded-xl overflow-hidden cursor-pointer border border-white/5 hover:border-purple-500/50 transition-colors bg-black">
+                            <img src="img2.jpg" onerror="this.src='https://placehold.co/300x400/1a1a1a/FFF?text=Questions'" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover/card:scale-110 opacity-60 group-hover/card:opacity-40">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent"></div>
+                            <div class="absolute bottom-0 left-0 p-5 w-full">
+                                <div class="flex items-center gap-2 mb-1">
+                                    <div class="w-2 h-2 rounded-full bg-purple-500 opacity-0 -translate-x-4 group-hover/card:opacity-100 group-hover/card:translate-x-0 transition-all duration-300"></div>
+                                    <h4 class="text-white font-bold text-lg group-hover/card:translate-x-1 transition-transform duration-300">Top 150 Questions</h4>
+                                </div>
+                                <p class="text-slate-400 text-xs leading-relaxed">Master the most frequently asked coding problems.</p>
+                            </div>
+                        </div>
+                        <div class="group/card relative h-64 rounded-xl overflow-hidden cursor-pointer border border-white/5 hover:border-purple-500/50 transition-colors bg-black">
+                            <img src="resume.png" onerror="this.src='https://placehold.co/300x400/1a1a1a/FFF?text=Resume'" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover/card:scale-110 opacity-60 group-hover/card:opacity-40">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent"></div>
+                            <div class="absolute bottom-0 left-0 p-5 w-full">
+                                <div class="flex items-center gap-2 mb-1">
+                                    <div class="w-2 h-2 rounded-full bg-purple-500 opacity-0 -translate-x-4 group-hover/card:opacity-100 group-hover/card:translate-x-0 transition-all duration-300"></div>
+                                    <h4 class="text-white font-bold text-lg group-hover/card:translate-x-1 transition-transform duration-300">Resume Analyser</h4>
+                                </div>
+                                <p class="text-slate-400 text-xs leading-relaxed">Get instant feedback on your resume.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <a href="index.html#pricing" class="text-sm font-medium text-slate-300 hover:text-white transition-colors">Pricing</a>
+                <!-- Dashboard Link: Hidden by default -->
+                <a href="interview.html" id="nav-dashboard" class="text-sm font-medium text-indigo-400 hover:text-indigo-300 transition-colors hidden">Dashboard</a>
+            </nav>
+
+            <!-- Right: Login Button -->
+            <div class="pointer-events-auto">
+                <button id="loginBtn" onclick="handleAuthClick()" class="px-6 py-2 rounded-full border border-white/20 bg-black/50 backdrop-blur-sm hover:bg-white/10 text-white font-medium transition-all text-sm">
+                    Log In
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- LOGIN MODAL -->
+    <div id="loginModal" class="fixed inset-0 z-[100] hidden items-center justify-center bg-black/80 backdrop-blur-sm">
+        <div class="bg-slate-900 border border-slate-700 p-8 rounded-2xl w-full max-w-md relative shadow-2xl">
+            <button onclick="closeLoginModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white">
+                <i data-lucide="x" class="w-6 h-6"></i>
+            </button>
+            <h2 class="text-2xl font-bold mb-6 text-center">Login</h2>
+            <form id="loginForm" onsubmit="handleLoginSubmit(event)" class="space-y-4">
+                <div>
+                    <label class="block text-sm text-slate-400 mb-1">Username</label>
+                    <input type="text" id="username" class="w-full bg-black border border-slate-700 rounded-lg p-3 focus:outline-none focus:border-indigo-500" placeholder="admin">
+                </div>
+                <div>
+                    <label class="block text-sm text-slate-400 mb-1">Password</label>
+                    <input type="password" id="password" class="w-full bg-black border border-slate-700 rounded-lg p-3 focus:outline-none focus:border-indigo-500" placeholder="••••••••">
+                </div>
+                <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3 rounded-lg mt-4 transition-colors">
+                    Login
+                </button>
+                
+                <div class="relative my-4">
+                    <div class="absolute inset-0 flex items-center">
+                        <div class="w-full border-t border-slate-700"></div>
+                    </div>
+                    <div class="relative flex justify-center text-xs uppercase">
+                        <span class="bg-slate-900 px-2 text-slate-500">Or try it out</span>
+                    </div>
+                </div>
+
+                <button type="button" onclick="handleDemoLogin()" class="w-full bg-white/10 hover:bg-white/20 text-white font-bold py-3 rounded-lg border border-white/10 transition-colors flex items-center justify-center gap-2">
+                    <i data-lucide="play-circle" class="w-4 h-4"></i> Free Demo Login
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <section class="min-h-screen pt-40 pb-24 bg-black">
+        <div class="max-w-7xl mx-auto px-6 space-y-32">
+            
+            <!-- 1. We are Mockify AI -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+                <div class="space-y-6">
+                    <div class="inline-flex items-center gap-2 text-indigo-400 font-semibold">
+                        <div class="w-8 h-[2px] bg-indigo-400"></div> About Us
+                    </div>
+                    <h1 class="text-5xl font-bold text-white leading-tight">
+                        We are <span class="animate-shine">Mockify AI</span>
+                    </h1>
+                    <div class="space-y-4 text-slate-400 text-lg leading-relaxed">
+                        <p>
+                            Mockify AI is revolutionizing the way job seekers prepare for interviews. Born from the need to make high-quality interview coaching accessible to everyone, we leverage advanced generative AI to simulate realistic interview scenarios.
+                        </p>
+                        <p>
+                            Our intelligent system adapts to your responses, providing real-time feedback on your speech patterns, technical accuracy, and soft skills.
+                        </p>
+                    </div>
+                </div>
+                <!-- Image -->
+                <div class="relative group">
+                    <img src="about.jpg" onerror="this.src='https://placehold.co/600x500/111/FFF?text=about.jpg'" alt="About Mockify AI" class="relative rounded-2xl shadow-2xl w-full object-cover">
+                </div>
+            </div>
+
+            <!-- 2. Mission & Vision -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Mission -->
+                <div class="glass-frame p-10 rounded-3xl relative overflow-hidden group hover:border-indigo-500/50 transition-colors">
+                    <div class="absolute top-0 right-0 p-8 opacity-10 group-hover:opacity-20 transition-opacity">
+                        <i data-lucide="target" class="w-32 h-32 text-indigo-500"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4 flex items-center gap-3 text-white">
+                        <i data-lucide="target" class="w-6 h-6 text-indigo-400"></i> Our Mission
+                    </h3>
+                    <p class="text-slate-400 leading-relaxed">
+                        To democratize career coaching by providing an accessible, intelligent, and personalized interview practice platform that empowers every individual to realize their full professional potential.
+                    </p>
+                </div>
+
+                <!-- Vision -->
+                <div class="glass-frame p-10 rounded-3xl relative overflow-hidden group hover:border-purple-500/50 transition-colors">
+                    <div class="absolute top-0 right-0 p-8 opacity-10 group-hover:opacity-20 transition-opacity">
+                        <i data-lucide="eye" class="w-32 h-32 text-purple-500"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4 flex items-center gap-3 text-white">
+                        <i data-lucide="eye" class="w-6 h-6 text-purple-400"></i> Our Vision
+                    </h3>
+                    <p class="text-slate-400 leading-relaxed">
+                        A world where anxiety is replaced by confidence, and talent is the only barrier to entry. We envision a future where AI bridges the gap between preparation and opportunity.
+                    </p>
+                </div>
+            </div>
+
+            <!-- 3. COMPANY ROADMAP & MILESTONES (NEW SECTION) -->
+            <div class="py-12 border-t border-white/5">
+                
+                <!-- Section 1: Goal Achieved -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 mb-40 timeline-container relative" id="timeline-1">
+                    <!-- Left: Scrolling Timeline -->
+                    <div class="relative pl-8 border-l-2 border-gray-700/30">
+                        <!-- Dynamic Progress Line -->
+                        <div class="progress-line absolute left-[-2px] top-0 w-[2px] bg-purple-500 h-0 transition-all duration-100 ease-out"></div>
+                        
+                        <h2 class="text-4xl font-bold mb-16 animate-shine sticky top-32 bg-black py-4 z-10 lg:static lg:bg-transparent lg:py-0">Goal Achieved</h2>
+                        
+                        <!-- Milestone Items -->
+                        <div class="mb-32 relative group">
+                            <div class="absolute -left-[41px] top-2 w-4 h-4 rounded-full bg-purple-500 ring-4 ring-black/50 shadow-[0_0_15px_rgba(168,85,247,0.6)] z-10"></div>
+                            <h3 class="text-2xl font-bold text-white mb-2 group-hover:text-purple-400 transition-colors">Inception</h3>
+                            <p class="text-gray-400 leading-relaxed">The idea was born from a dorm room struggle to find quality mock interview partners.</p>
+                        </div>
+
+                        <div class="mb-32 relative group">
+                            <div class="absolute -left-[41px] top-2 w-4 h-4 rounded-full bg-purple-500 ring-4 ring-black/50 shadow-[0_0_15px_rgba(168,85,247,0.6)] z-10"></div>
+                            <h3 class="text-2xl font-bold text-white mb-2 group-hover:text-purple-400 transition-colors">Voice & Video</h3>
+                            <p class="text-gray-400 leading-relaxed">Integrated real-time speech processing to simulate actual interview pressure.</p>
+                        </div>
+
+                        <div class="mb-32 relative group">
+                            <div class="absolute -left-[41px] top-2 w-4 h-4 rounded-full bg-purple-500 ring-4 ring-black/50 shadow-[0_0_15px_rgba(168,85,247,0.6)] z-10"></div>
+                            <h3 class="text-2xl font-bold text-white mb-2 group-hover:text-purple-400 transition-colors">AI Agents for All Interview Rounds</h3>
+                            <p class="text-gray-400 leading-relaxed">Specialized agents for behavioral, system design, and coding rounds to cover every aspect.</p>
+                        </div>
+
+                        <div class="mb-20 relative group">
+                            <div class="absolute -left-[41px] top-2 w-4 h-4 rounded-full bg-purple-500 ring-4 ring-black/50 shadow-[0_0_15px_rgba(168,85,247,0.6)] z-10"></div>
+                            <h3 class="text-2xl font-bold text-white mb-2 group-hover:text-purple-400 transition-colors">Top 150 Question Practice Module</h3>
+                            <p class="text-gray-400 leading-relaxed">Curated list of must-do problems to ensure complete preparation.</p>
+                        </div>
+                    </div>
+
+                    <!-- Right: Sticky Image -->
+                    <div class="hidden lg:block relative h-full">
+                        <div class="sticky top-32 w-full h-[600px] rounded-3xl overflow-hidden border border-white/10 shadow-2xl">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent z-10"></div>
+                            <img src="milestone.jpg" onerror="this.src='https://placehold.co/600x800/1e1b4b/FFF?text=Goals+Achieved'" class="w-full h-full object-cover transform hover:scale-105 transition-transform duration-700">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 2: Future Goals -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 timeline-container relative" id="timeline-2">
+                    <!-- Left: Sticky Image (Desktop) / Hidden (Mobile) -->
+                    <div class="hidden lg:block relative h-full">
+                        <div class="sticky top-32 w-full h-[600px] rounded-3xl overflow-hidden border border-white/10 shadow-2xl">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent z-10"></div>
+                            <img src="milestone2.jpg" onerror="this.src='https://placehold.co/600x800/312e81/FFF?text=Future+Goals'" class="w-full h-full object-cover transform hover:scale-105 transition-transform duration-700">
+                        </div>
+                    </div>
+
+                    <!-- Right: Scrolling Timeline -->
+                    <div class="relative pl-8 border-l-2 border-gray-700/30">
+                        <!-- Dynamic Progress Line -->
+                        <div class="progress-line absolute left-[-2px] top-0 w-[2px] bg-purple-500 h-0 transition-all duration-100 ease-out"></div>
+                        
+                        <h2 class="text-4xl font-bold mb-16 animate-shine sticky top-32 bg-black py-4 z-10 lg:static lg:bg-transparent lg:py-0">Future Goals</h2>
+                        
+                        <!-- Milestone Items -->
+                        <div class="mb-32 relative group">
+                            <div class="absolute -left-[41px] top-2 w-4 h-4 rounded-full bg-purple-500 ring-4 ring-black/50 shadow-[0_0_15px_rgba(168,85,247,0.6)] z-10"></div>
+                            <h3 class="text-2xl font-bold text-white mb-2 group-hover:text-purple-400 transition-colors">Full AI Resume Ecosystem</h3>
+                            <p class="text-gray-400 leading-relaxed">We aim to expand Mockify Resume Insight into a complete AI‑driven career ecosystem.</p>
+                        </div>
+
+                        <div class="mb-32 relative group">
+                            <div class="absolute -left-[41px] top-2 w-4 h-4 rounded-full bg-purple-500 ring-4 ring-black/50 shadow-[0_0_15px_rgba(168,85,247,0.6)] z-10"></div>
+                            <h3 class="text-2xl font-bold text-white mb-2 group-hover:text-purple-400 transition-colors">VR‑Powered Real-Time Interview Rooms</h3>
+                            <p class="text-gray-400 leading-relaxed">Immersive interview experiences to bridge the gap between digital and physical.</p>
+                        </div>
+
+                        <div class="mb-32 relative group">
+                            <div class="absolute -left-[41px] top-2 w-4 h-4 rounded-full bg-purple-500 ring-4 ring-black/50 shadow-[0_0_15px_rgba(168,85,247,0.6)] z-10"></div>
+                            <h3 class="text-2xl font-bold text-white mb-2 group-hover:text-purple-400 transition-colors">AI + Human Hybrid Hiring System</h3>
+                            <p class="text-gray-400 leading-relaxed">For Companies - Best of both worlds ensuring efficiency and human touch.</p>
+                        </div>
+
+                        <div class="mb-20 relative group">
+                            <div class="absolute -left-[41px] top-2 w-4 h-4 rounded-full bg-purple-500 ring-4 ring-black/50 shadow-[0_0_15px_rgba(168,85,247,0.6)] z-10"></div>
+                            <h3 class="text-2xl font-bold text-white mb-2 group-hover:text-purple-400 transition-colors">Scaling in Multiple Companies 100+</h3>
+                            <p class="text-gray-400 leading-relaxed">Expanding our reach to support candidates targeting over 100 different top-tier tech companies.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="bg-black border-t border-white/10 py-16">
+        <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-12">
+            
+            <!-- Brand -->
+            <div class="col-span-1 md:col-span-2 space-y-4">
+                <img src="logo.png" onerror="this.src='https://placehold.co/120x80/333/FFF?text=Logo'" alt="Mockify AI" class="h-24 w-auto">
+                <p class="text-slate-400 text-sm max-w-sm">
+                    Revolutionizing interview preparation with AI-driven insights and realistic simulations. Master your skills and land your dream job.
+                </p>
+            </div>
+
+            <!-- Contact Us -->
+            <div class="col-span-1 space-y-4">
+                <h4 class="text-white font-bold text-lg">Contact Us</h4>
+                <div class="flex flex-col gap-3">
+                    <a href="https://wa.me/" target="_blank" class="flex items-center gap-3 text-slate-400 hover:text-green-400 transition-colors">
+                        <i data-lucide="message-circle" class="w-5 h-5"></i> WhatsApp
+                    </a>
+                    <a href="https://twitter.com/" target="_blank" class="flex items-center gap-3 text-slate-400 hover:text-blue-400 transition-colors">
+                        <i data-lucide="twitter" class="w-5 h-5"></i> X (Twitter)
+                    </a>
+                    <a href="https://linkedin.com/" target="_blank" class="flex items-center gap-3 text-slate-400 hover:text-blue-600 transition-colors">
+                        <i data-lucide="linkedin" class="w-5 h-5"></i> LinkedIn
+                    </a>
+                    <a href="https://instagram.com/" target="_blank" class="flex items-center gap-3 text-slate-400 hover:text-pink-500 transition-colors">
+                        <i data-lucide="instagram" class="w-5 h-5"></i> Instagram
+                    </a>
+                </div>
+            </div>
+
+            <!-- Links -->
+            <div class="col-span-1 space-y-4">
+                <h4 class="text-white font-bold text-lg">Quick Links</h4>
+                <div class="flex flex-col gap-3">
+                    <a href="index.html" class="text-slate-400 hover:text-white transition-colors">Home</a>
+                    <a href="aboutus.html" class="text-slate-400 hover:text-white transition-colors">About Us</a>
+                    <a href="index.html#features" class="text-slate-400 hover:text-white transition-colors">Features</a>
+                    <a href="index.html#pricing" class="text-slate-400 hover:text-white transition-colors">Pricing</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="max-w-7xl mx-auto px-6 mt-12 pt-8 border-t border-white/5 text-center text-slate-600 text-sm">
+            &copy; 2024 Mockify AI. All rights reserved.
+        </div>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+
+        // --- Auth Logic ---
+        let isLoggedIn = false;
+        const loginBtn = document.getElementById('loginBtn');
+        const navDashboard = document.getElementById('nav-dashboard');
+
+        // Check login state on load
+        if (localStorage.getItem('isLoggedIn') === 'true') {
+            isLoggedIn = true;
+            loginBtn.innerText = "Log Out";
+            navDashboard.classList.remove('hidden');
+        }
+
+        function handleAuthClick() {
+            if (isLoggedIn) {
+                // Logout Logic
+                isLoggedIn = false;
+                localStorage.setItem('isLoggedIn', 'false');
+                loginBtn.innerText = "Log In";
+                navDashboard.classList.add('hidden');
+                alert("Logged out successfully.");
+            } else {
+                openLoginModal();
+            }
+        }
+
+        function openLoginModal() {
+            document.getElementById('loginModal').classList.remove('hidden');
+            document.getElementById('loginModal').classList.add('flex');
+        }
+
+        function closeLoginModal() {
+            document.getElementById('loginModal').classList.add('hidden');
+            document.getElementById('loginModal').classList.remove('flex');
+        }
+
+        function handleLoginSubmit(e) {
+            e.preventDefault();
+            const u = document.getElementById('username').value;
+            const p = document.getElementById('password').value;
+
+            if (u === 'admin' && p === 'admin123') {
+                performLogin();
+            } else {
+                alert("Invalid Credentials. Please try again.");
+            }
+        }
+
+        function handleDemoLogin() {
+            performLogin();
+        }
+
+        function performLogin() {
+            isLoggedIn = true;
+            localStorage.setItem('isLoggedIn', 'true');
+            loginBtn.innerText = "Log Out";
+            navDashboard.classList.remove('hidden'); // Show dashboard
+            alert("Login Successful! Welcome.");
+            closeLoginModal();
+            document.getElementById('username').value = '';
+            document.getElementById('password').value = '';
+            // Optional: Auto redirect
+            // window.location.href = 'interview.html';
+        }
+
+        document.getElementById('loginModal').addEventListener('click', (e) => {
+            if (e.target.id === 'loginModal') closeLoginModal();
+        });
+
+        // --- Timeline Scroll Animation ---
+        function updateTimelineProgress() {
+            const containers = document.querySelectorAll('.timeline-container');
+            
+            containers.forEach(container => {
+                const rect = container.getBoundingClientRect();
+                const windowHeight = window.innerHeight;
+                
+                // Start filling when top of container is 20% down from viewport
+                const startOffset = windowHeight * 0.8;
+                
+                // Calculate progress
+                let progress = 0;
+                
+                // If container is visible
+                if (rect.top < startOffset) {
+                    // How much have we scrolled past the start point
+                    const distanceScrolled = startOffset - rect.top;
+                    const totalHeight = rect.height;
+                    
+                    // Adjust ratio to finish slightly before bottom for better visual
+                    progress = (distanceScrolled / (totalHeight - windowHeight * 0.2)) * 100;
+                    progress = Math.min(Math.max(progress, 0), 100);
+                }
+
+                // Update the line in this specific container
+                const line = container.querySelector('.progress-line');
+                if (line) {
+                    line.style.height = `${progress}%`;
+                }
+            });
+        }
+
+        window.addEventListener('scroll', updateTimelineProgress);
+        window.addEventListener('resize', updateTimelineProgress);
+        
+        // Initial check
+        updateTimelineProgress();
+    </script>
+
+    <!-- Global Config -->
+    <script src="js/config.js"></script>
+
+    <!-- API Handler -->
+    <script src="js/api.js"></script>
+
+    <!-- AI Router -->
+    <script src="js/aiRouter.js"></script>
+
+    <script src="js/auth.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,166 @@
+{
+  "total_interviews": 64,
+  "average_score": 9,
+  "history": [
+    {
+      "company": "Google",
+      "role": "Software Engineer",
+      "round": "Phone Screen",
+      "score": 50,
+      "verdict": "Moderate",
+      "date": "Today"
+    },
+    {
+      "company": "Google",
+      "role": "Software Engineer",
+      "round": "Phone Screen",
+      "score": 21,
+      "verdict": "Moderate",
+      "date": "Today"
+    },
+    {
+      "company": "Google",
+      "role": "Software Engineer",
+      "round": "HR Round",
+      "score": 21,
+      "verdict": "Better Luck Next Time",
+      "date": "Today"
+    },
+    {
+      "company": "Google",
+      "role": "Software Engineer",
+      "round": "HR Round",
+      "score": 31,
+      "verdict": "Moderate",
+      "date": "Today"
+    },
+    {
+      "company": "Amazon",
+      "role": "Software Engineer",
+      "round": "Phone Screen",
+      "score": 21,
+      "verdict": "Moderate",
+      "date": "Today"
+    },
+    {
+      "company": "Amazon",
+      "role": "Software Engineer",
+      "round": "Technical Coding",
+      "score": 40,
+      "verdict": "Moderate",
+      "date": "Today"
+    },
+    {
+      "company": "Google",
+      "role": "Software Engineer",
+      "round": "Phone Screen",
+      "score": 10,
+      "verdict": "Better Luck Next Time",
+      "date": "Today"
+    },
+    {
+      "company": "Google",
+      "role": "Software Engineer",
+      "round": "Phone Screen",
+      "score": 10,
+      "verdict": "BETTER LUCK NEXT TIME",
+      "date": "Today"
+    },
+    {
+      "company": "Google",
+      "role": "Software Engineer",
+      "round": "Phone Screen",
+      "score": 0,
+      "verdict": "Fail",
+      "date": "Today"
+    },
+    {
+      "company": "Google",
+      "role": "Software Engineer",
+      "round": "Phone Screen",
+      "score": 41,
+      "verdict": "Good",
+      "date": "Today"
+    },
+    {
+      "company": "Google",
+      "role": "Software Engineer",
+      "round": "Phone Screen",
+      "score": 0,
+      "verdict": "Better Luck Next Time",
+      "date": "Today"
+    },
+    {
+      "company": "Google",
+      "role": "Software Engineer",
+      "round": "HR Round",
+      "score": 0,
+      "verdict": "Better Luck Next Time",
+      "date": "Today"
+    },
+    {
+      "company": "Google",
+      "role": "Software Engineer",
+      "round": "Phone Screen",
+      "score": 0,
+      "verdict": "Better Luck Next Time",
+      "date": "Today"
+    },
+    {
+      "company": "Google",
+      "role": "Software Engineer",
+      "round": "Phone Screen",
+      "score": 10,
+      "verdict": "Better Luck Next Time",
+      "date": "Today"
+    },
+    {
+      "company": "Google",
+      "role": "Software Engineer",
+      "round": "Phone Screen",
+      "score": 21,
+      "verdict": "Moderate",
+      "date": "Today"
+    },
+    {
+      "company": "Google",
+      "role": "Software Engineer",
+      "round": "Phone Screen",
+      "score": 0,
+      "verdict": "Better Luck Next Time",
+      "date": "Today"
+    },
+    {
+      "company": "Google",
+      "role": "Software Engineer",
+      "round": "Phone Screen",
+      "score": 0,
+      "verdict": "Better Luck Next Time",
+      "date": "Today"
+    },
+    {
+      "company": "Google",
+      "role": "Software Engineer",
+      "round": "Phone Screen",
+      "score": 0,
+      "verdict": "Better Luck Next Time",
+      "date": "Today"
+    },
+    {
+      "company": "Google",
+      "role": "Software Engineer",
+      "round": "HR Round",
+      "score": 0,
+      "verdict": "Better Luck Next Time",
+      "date": "Today"
+    },
+    {
+      "company": "Google",
+      "role": "Software Engineer",
+      "round": "Phone Screen",
+      "score": 0,
+      "verdict": "Better Luck Next Time",
+      "date": "Today"
+    }
+  ]
+}

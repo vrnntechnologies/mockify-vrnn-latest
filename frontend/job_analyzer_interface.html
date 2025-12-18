@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mockify AI - Resume Intelligence</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .loader {
+            border-top-color: #4F46E5;
+            -webkit-animation: spinner 1.5s linear infinite;
+            animation: spinner 1.5s linear infinite;
+        }
+        @keyframes spinner {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .hidden { display: none; }
+        details > summary { list-style: none; }
+        details > summary::-webkit-details-marker { display: none; }
+    </style>
+</head>
+<body class="bg-black text-slate-200 font-sans h-screen flex overflow-hidden">
+
+    <!-- Sidebar -->
+    <aside class="w-64 bg-black border-r border-zinc-800 flex flex-col z-10">
+        <div class="p-6 flex items-center gap-3">
+            <h1 class="text-xl font-bold tracking-tight text-white">Mockify <span class="text-indigo-500">AI</span></h1>
+        </div>
+
+        <div class="px-4 mb-6">
+            <a href="dashboard.html" class="w-full flex items-center justify-center gap-2 px-4 py-2 bg-white text-black text-sm font-bold rounded-lg hover:bg-slate-200 transition-colors shadow-sm">
+                <i class="fa-solid fa-arrow-left"></i> Back to Main Dashboard
+            </a>
+        </div>
+
+        <nav class="flex-1 px-4 space-y-2">
+            <button onclick="showSection('resume-analysis')" class="nav-btn w-full flex items-center gap-3 px-4 py-3 text-white bg-zinc-800 rounded-lg transition-colors font-medium">
+                <i class="fa-solid fa-user"></i>
+                <span>AI Resume Analysis</span>
+            </button>
+            <button onclick="showSection('fast-resume-perfect')" class="nav-btn w-full flex items-center gap-3 px-4 py-3 text-zinc-400 hover:bg-zinc-800 hover:text-white rounded-lg transition-colors font-medium">
+                <i class="fa-solid fa-users-viewfinder"></i>
+                <span>Recuiters Zone</span>
+            </button>
+            <button onclick="showSection('history-view')" class="nav-btn w-full flex items-center gap-3 px-4 py-3 text-zinc-400 hover:bg-zinc-800 hover:text-white rounded-lg transition-colors font-medium">
+                <i class="fa-solid fa-clock-rotate-left"></i>
+                <span>History</span>
+            </button>
+        </nav>
+
+        <div class="p-4 border-t border-zinc-800">
+            <p class="text-xs text-center text-zinc-600">Powered by Local LLM</p>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 flex flex-col h-screen overflow-hidden bg-black relative p-8">
+        
+        <!-- SECTION 1: Single Resume Analysis -->
+        <div id="resume-analysis" class="section-content h-full flex flex-col">
+            <div class="mb-6">
+                <h2 class="text-3xl font-bold text-white">AI Resume Analysis</h2>
+                <p class="text-zinc-400 mt-2">Upload your resume for instant AI scoring and feedback.</p>
+            </div>
+            <div class="flex-1 grid grid-cols-1 lg:grid-cols-2 gap-8 min-h-0">
+                <div class="bg-white p-8 rounded-2xl border-2 border-dashed border-indigo-200 hover:border-indigo-400 transition-colors flex flex-col items-center justify-center text-center shadow-sm" id="single-drop-zone">
+                    <div class="w-20 h-20 bg-indigo-50 text-indigo-600 rounded-full flex items-center justify-center text-3xl mb-6">
+                        <i class="fa-solid fa-cloud-arrow-up"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-800">Upload Resume</h3>
+                    <p class="text-slate-500 mt-2 mb-8">PDF, DOCX, or DOC</p>
+                    <input type="file" id="single-upload" class="hidden" accept=".pdf,.doc,.docx">
+                    <button onclick="document.getElementById('single-upload').click()" class="bg-indigo-600 hover:bg-indigo-700 text-white px-8 py-3 rounded-xl font-medium transition-colors shadow-lg hover:shadow-indigo-500/30">
+                        Select File
+                    </button>
+                </div>
+                <div id="single-results-area" class="bg-white rounded-2xl border border-slate-200 shadow-sm p-8 overflow-y-auto relative text-slate-800">
+                    <div id="single-placeholder" class="absolute inset-0 flex flex-col items-center justify-center text-center p-8">
+                        <i class="fa-solid fa-wand-magic-sparkles text-5xl text-slate-200 mb-4"></i>
+                        <p class="text-slate-400 font-medium">AI Insights will appear here</p>
+                    </div>
+                    <div id="single-loader" class="absolute inset-0 bg-white z-20 flex flex-col items-center justify-center hidden">
+                        <div class="loader w-16 h-16 rounded-full border-4 border-slate-200 mb-6"></div>
+                        <p class="text-indigo-600 font-bold animate-pulse">Analyzing Resume...</p>
+                    </div>
+                    <div id="single-content" class="hidden space-y-6">
+                        <div class="flex justify-between items-center pb-6 border-b border-slate-100">
+                            <h3 class="text-xl font-bold text-slate-800">Analysis Report</h3>
+                            <div class="flex gap-3 items-center">
+                                <span class="bg-indigo-100 text-indigo-700 px-4 py-2 rounded-lg font-bold text-lg" id="single-score">--</span>
+                                <button onclick="resetSingleAnalysis()" class="p-2 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-lg transition-colors" title="Refresh">
+                                    <i class="fa-solid fa-rotate-right"></i> Refresh
+                                </button>
+                            </div>
+                        </div>
+                        <div>
+                            <h4 class="text-sm uppercase tracking-wide text-slate-500 font-bold mb-3">Detected Skills</h4>
+                            <div class="flex flex-wrap gap-2" id="single-skills"></div>
+                        </div>
+                        <div>
+                            <h4 class="text-sm uppercase tracking-wide text-slate-500 font-bold mb-3">Suggestions</h4>
+                            <ul class="space-y-3" id="single-improvements"></ul>
+                        </div>
+                        <div class="bg-slate-50 p-6 rounded-xl border border-slate-200">
+                            <h4 class="text-sm font-bold text-slate-800 mb-2">Executive Summary</h4>
+                            <p class="text-slate-600 leading-relaxed" id="single-summary"></p>
+                        </div>
+                        <div class="pt-4">
+                            <button onclick="resetSingleAnalysis()" class="w-full py-3 bg-black text-white rounded-lg font-medium hover:bg-slate-800 transition-colors">Analyze Another Resume</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 2: Fast Resume Perfect -->
+        <div id="fast-resume-perfect" class="section-content hidden h-full flex flex-col">
+            <div class="mb-6">
+                <h2 class="text-3xl font-bold text-white">Recuiters Zone</h2>
+                <p class="text-zinc-400 mt-2">HR Tool: Batch process resumes to find the top candidates.</p>
+            </div>
+            
+            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm flex-1 flex flex-col overflow-hidden text-slate-800 relative">
+                
+                <!-- INPUT FORM -->
+                <div id="batch-form-container" class="h-full flex flex-col">
+                    <div class="p-6 border-b border-slate-200 bg-slate-50/50 flex-1 overflow-y-auto">
+                        
+                        <div class="mb-6">
+                            <label class="block text-xs font-bold text-slate-500 uppercase mb-2">Select Role You Want</label>
+                            <select id="batch-role" class="w-full px-4 py-2 bg-white border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 text-slate-800 font-bold">
+                                <option value="Software Engineer">Software Engineer</option>
+                                <option value="Backend Engineer">Backend Engineer</option>
+                                <option value="Data Scientist">Data Scientist</option>
+                                <option value="AI/ML Engineer">AI/ML Engineer</option>
+                                <option value="Product Manager">Product Manager</option>
+                                <option value="Frontend Developer">Frontend Developer</option>
+                                <option value="Sales Associate">Sales Associate</option>
+                            </select>
+                        </div>
+
+                         <div class="mb-6">
+                            <label class="block text-xs font-bold text-slate-500 uppercase mb-2">Main Language (Must be Excellent)</label>
+                            <input type="text" id="batch-main-lang" placeholder="e.g. Python, Java..." class="w-full px-4 py-2 bg-white border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 text-slate-800">
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                            <div>
+                                <label class="block text-xs font-bold text-slate-500 uppercase mb-2">Candidate Type</label>
+                                <select id="batch-type" class="w-full px-4 py-2 bg-white border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 text-slate-800" onchange="toggleBatchFields()">
+                                    <option value="fresher">Fresher</option>
+                                    <option value="professional">Working Professional</option>
+                                </select>
+                            </div>
+                            
+                            <div id="field-fresher">
+                                <label class="block text-xs font-bold text-slate-500 uppercase mb-2">Do you prefer projects?</label>
+                                <select id="batch-projects-pref" class="w-full px-4 py-2 bg-white border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 text-slate-800">
+                                    <option value="yes">Yes</option>
+                                    <option value="no">No</option>
+                                </select>
+                            </div>
+
+                            <div id="field-pro" class="hidden">
+                                <label class="block text-xs font-bold text-slate-500 uppercase mb-2">Experience Required (Years)</label>
+                                <input type="text" id="batch-exp-years" placeholder="e.g. 4-5" class="w-full px-4 py-2 bg-white border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 text-slate-800">
+                            </div>
+                        </div>
+
+                        <div class="h-px bg-slate-200 w-full mb-6"></div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-end">
+                            <div>
+                                <label class="block text-xs font-bold text-slate-500 uppercase mb-2">Total Uploads</label>
+                                <input type="number" id="batch-total-count" placeholder="e.g. 6" class="w-full px-4 py-2 bg-white border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 text-slate-800">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-500 uppercase mb-2">Select Top Candidates</label>
+                                <input type="number" id="batch-top-count" value="3" placeholder="e.g. 3" class="w-full px-4 py-2 bg-white border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 text-slate-800">
+                            </div>
+                            <div>
+                                 <input type="file" id="batch-upload" class="hidden" multiple accept=".pdf,.doc,.docx">
+                                <button onclick="document.getElementById('batch-upload').click()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2 rounded-lg font-bold transition-colors shadow-md h-[42px]">
+                                    <i class="fa-solid fa-folder-open mr-2"></i> Select Files
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- RESULTS CONTAINER (Flex column to allow scrolling inside list) -->
+                <div id="batch-results-container" class="hidden flex flex-col h-full bg-slate-50 absolute inset-0 z-20">
+                    
+                    <!-- Loader -->
+                    <div id="batch-loader" class="hidden absolute inset-0 bg-slate-50/95 z-50 flex flex-col items-center justify-center">
+                        <div class="loader w-20 h-20 rounded-full border-4 border-indigo-600 border-t-transparent mb-6"></div>
+                        <h3 class="text-2xl font-bold text-indigo-800">Processing Resumes...</h3>
+                        <p class="text-slate-600 mt-2">This may take a moment depending on the number of files.</p>
+                        <p class="text-sm text-slate-400 mt-4" id="batch-progress-text">Please wait</p>
+                    </div>
+
+                    <!-- Header -->
+                    <div class="p-4 border-b border-slate-200 bg-white flex justify-between items-center shadow-sm flex-none">
+                        <h3 class="font-bold text-slate-700 text-lg">Analysis Results</h3>
+                        <button onclick="resetBatchAnalysis()" class="bg-indigo-50 border border-indigo-200 hover:bg-indigo-100 text-indigo-700 px-4 py-2 rounded-lg font-bold transition-colors text-sm">
+                            <i class="fa-solid fa-rotate-right mr-2"></i> Clear Results
+                        </button>
+                    </div>
+
+                    <!-- Scrollable List -->
+                    <div class="flex-1 overflow-y-auto p-6 space-y-8">
+                         <!-- Section 1: Top Candidates -->
+                         <div id="section-top" class="hidden">
+                             <h4 class="text-md font-bold text-green-700 uppercase tracking-wider mb-3 border-b border-green-200 pb-2">
+                                 <i class="fa-solid fa-trophy mr-2"></i> Top Candidates (Matches HR Wants)
+                             </h4>
+                             <div id="batch-results-top" class="space-y-4 max-w-4xl mx-auto"></div>
+                         </div>
+
+                         <!-- Section 2: Good Fits (Better than Rejected, but not Top) -->
+                         <div id="section-good" class="hidden">
+                             <h4 class="text-md font-bold text-indigo-600 uppercase tracking-wider mb-3 border-b border-indigo-200 pb-2">
+                                 <i class="fa-solid fa-thumbs-up mr-2"></i> Good Fit Resumes (Avg 50-79)
+                             </h4>
+                             <p class="text-xs text-slate-500 mb-4">Fit the role but lack some experience or specific skills compared to Top candidates.</p>
+                             <div id="batch-results-good" class="space-y-4 max-w-4xl mx-auto"></div>
+                         </div>
+
+                         <!-- Section 3: Rejections -->
+                         <div id="section-rejected" class="hidden">
+                             <h4 class="text-md font-bold text-red-600 uppercase tracking-wider mb-3 border-b border-red-200 pb-2">
+                                 <i class="fa-solid fa-ban mr-2"></i> Rejected Candidates (Not Fit / Weak)
+                             </h4>
+                             <p class="text-xs text-slate-500 mb-4">Candidates rejected due to low score, wrong role, bad formatting, or unprofessional content.</p>
+                             <div id="batch-results-rejected" class="space-y-4 max-w-4xl mx-auto opacity-75 grayscale-[50%]"></div>
+                         </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- SECTION 3: HISTORY -->
+        <div id="history-view" class="section-content hidden h-full flex flex-col">
+            <div class="mb-6 flex justify-between items-end">
+                <div>
+                    <h2 class="text-3xl font-bold text-white">Analysis History</h2>
+                    <p class="text-zinc-400 mt-2">Previous resume analysis records.</p>
+                </div>
+                <button onclick="clearHistory()" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg text-sm font-bold transition-colors shadow-sm">
+                    <i class="fa-solid fa-trash-can mr-2"></i> Clear History
+                </button>
+            </div>
+            <div class="flex-1 grid grid-cols-1 lg:grid-cols-2 gap-8 min-h-0">
+                <div class="flex flex-col bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden text-slate-800">
+                    <div class="p-4 bg-slate-50 border-b border-slate-200">
+                        <h3 class="font-bold text-lg text-indigo-600"><i class="fa-solid fa-user mr-2"></i> Single Resume History</h3>
+                    </div>
+                    <div class="flex-1 overflow-y-auto p-4 space-y-3" id="history-single-list"></div>
+                </div>
+                <div class="flex flex-col bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden text-slate-800">
+                    <div class="p-4 bg-slate-50 border-b border-slate-200">
+                        <h3 class="font-bold text-lg text-indigo-600"><i class="fa-solid fa-users-viewfinder mr-2"></i> Batch History</h3>
+                    </div>
+                    <div class="flex-1 overflow-y-auto p-4 space-y-3" id="history-batch-list"></div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // --- Navigation Logic ---
+        function showSection(sectionId) {
+            document.querySelectorAll('.section-content').forEach(el => el.classList.add('hidden'));
+            document.getElementById(sectionId).classList.remove('hidden');
+            
+            const buttons = document.querySelectorAll('.nav-btn');
+            buttons.forEach(btn => {
+                btn.classList.remove('text-white', 'bg-zinc-800');
+                btn.classList.add('text-zinc-400', 'hover:bg-zinc-800', 'hover:text-white');
+            });
+
+            const indexMap = {
+                'resume-analysis': 0,
+                'fast-resume-perfect': 1,
+                'history-view': 2
+            };
+            
+            if (indexMap[sectionId] !== undefined) {
+                buttons[indexMap[sectionId]].classList.add('text-white', 'bg-zinc-800');
+                buttons[indexMap[sectionId]].classList.remove('text-zinc-400');
+            }
+            
+            if(sectionId === 'history-view') loadHistory();
+        }
+
+        // --- Feature 1: Single Resume Analysis ---
+        const singleInput = document.getElementById('single-upload');
+        singleInput.addEventListener('change', (e) => {
+            if (e.target.files.length) analyzeSingleResume(e.target.files[0]);
+        });
+        function resetSingleAnalysis() {
+            document.getElementById('single-content').classList.add('hidden');
+            document.getElementById('single-placeholder').classList.remove('hidden');
+            document.getElementById('single-upload').value = ''; 
+        }
+        async function analyzeSingleResume(file) {
+            const loader = document.getElementById('single-loader');
+            const content = document.getElementById('single-content');
+            const placeholder = document.getElementById('single-placeholder');
+            placeholder.classList.add('hidden');
+            content.classList.add('hidden');
+            loader.classList.remove('hidden');
+            const formData = new FormData();
+            formData.append('resume', file);
+            try {
+                const response = await fetch('http://127.0.0.1:5000/analyze', { method: 'POST', body: formData });
+                const data = await response.json();
+                if(data.error) throw new Error(data.error);
+                document.getElementById('single-score').textContent = `Score: ${data.ats_score}/100`;
+                document.getElementById('single-summary').textContent = data.summary;
+                document.getElementById('single-skills').innerHTML = data.skills.map(s => `<span class="px-3 py-1 bg-indigo-50 text-indigo-700 text-xs font-bold rounded-lg">${s}</span>`).join('');
+                document.getElementById('single-improvements').innerHTML = data.improvements.map(i => `<li class="flex items-start gap-2 text-sm text-slate-600"><i class="fa-solid fa-circle-exclamation text-amber-500 mt-1"></i> ${i}</li>`).join('');
+                loader.classList.add('hidden');
+                content.classList.remove('hidden');
+            } catch (err) {
+                alert("Analysis failed: " + err.message);
+                loader.classList.add('hidden');
+                placeholder.classList.remove('hidden');
+            }
+        }
+
+        // --- Feature 2: Fast Resume Perfect ---
+        const batchInput = document.getElementById('batch-upload');
+        
+        batchInput.addEventListener('change', (e) => {
+            if (e.target.files.length) analyzeBatchResumes(e.target.files);
+        });
+
+        function toggleBatchFields() {
+            const type = document.getElementById('batch-type').value;
+            if(type === 'fresher') {
+                document.getElementById('field-fresher').classList.remove('hidden');
+                document.getElementById('field-pro').classList.add('hidden');
+            } else {
+                document.getElementById('field-fresher').classList.add('hidden');
+                document.getElementById('field-pro').classList.remove('hidden');
+            }
+        }
+
+        function resetBatchAnalysis() {
+            document.getElementById('batch-results-container').classList.add('hidden');
+            document.getElementById('batch-results-top').innerHTML = '';
+            document.getElementById('batch-results-good').innerHTML = '';
+            document.getElementById('batch-results-rejected').innerHTML = '';
+            document.getElementById('batch-form-container').classList.remove('hidden');
+            document.getElementById('batch-upload').value = ''; 
+        }
+
+        async function analyzeBatchResumes(files) {
+            const loader = document.getElementById('batch-loader');
+            const topContainer = document.getElementById('batch-results-top');
+            const goodContainer = document.getElementById('batch-results-good');
+            const rejectedContainer = document.getElementById('batch-results-rejected');
+            const topN = parseInt(document.getElementById('batch-top-count').value || 3);
+            
+            // UI Logic
+            document.getElementById('batch-form-container').classList.add('hidden');
+            document.getElementById('batch-results-container').classList.remove('hidden');
+            loader.classList.remove('hidden');
+            document.getElementById('batch-progress-text').textContent = `Queuing ${files.length} resumes...`;
+
+            // Prepare Data
+            const formData = new FormData();
+            for (let i = 0; i < files.length; i++) {
+                formData.append('resumes', files[i]);
+            }
+            // Request ALL data so we can split on frontend
+            formData.append('top_n', files.length); 
+            
+            formData.append('role', document.getElementById('batch-role').value);
+            formData.append('main_language', document.getElementById('batch-main-lang').value);
+            formData.append('candidate_type', document.getElementById('batch-type').value);
+            
+            if(document.getElementById('batch-type').value === 'fresher') {
+                formData.append('prefers_projects', document.getElementById('batch-projects-pref').value);
+            } else {
+                formData.append('exp_years', document.getElementById('batch-exp-years').value || "0");
+            }
+
+            try {
+                const response = await fetch('http://127.0.0.1:5000/analyze_batch', { method: 'POST', body: formData });
+                const data = await response.json(); 
+
+                if(data.error) throw new Error(data.error);
+
+                // Clear Containers
+                topContainer.innerHTML = '';
+                goodContainer.innerHTML = '';
+                rejectedContainer.innerHTML = '';
+                document.getElementById('section-top').classList.add('hidden');
+                document.getElementById('section-good').classList.add('hidden');
+                document.getElementById('section-rejected').classList.add('hidden');
+
+                // ---- LOGIC FOR SPLITTING CANDIDATES ----
+                // 1. Separate clean zeros (explicit rejections/bad words)
+                // 2. Sort remaining descending
+                // 3. Take Top N
+                // 4. From remaining, if score >= 50 -> Good
+                // 5. If score < 50 -> Rejected (along with the zero scores)
+
+                let validCandidates = data.filter(item => item.score > 0);
+                let zeroCandidates = data.filter(item => item.score === 0);
+
+                // Sort valid candidates just in case backend didn't (though it does)
+                validCandidates.sort((a, b) => b.score - a.score);
+
+                // Slice Top N
+                let topCandidates = validCandidates.slice(0, topN);
+                let remainingCandidates = validCandidates.slice(topN);
+
+                // Filter Remaining into Good vs Weak
+                let goodCandidates = remainingCandidates.filter(item => item.score >= 50);
+                let weakCandidates = remainingCandidates.filter(item => item.score < 50);
+
+                // Combine weak with zero scores for the "Rejected" pile
+                let rejectedCandidates = [...weakCandidates, ...zeroCandidates];
+
+                // --- RENDER TOP CANDIDATES ---
+                if (topCandidates.length > 0) {
+                    document.getElementById('section-top').classList.remove('hidden');
+                    topCandidates.forEach((item, index) => {
+                        const html = createResultCard(item, index + 1, 'top');
+                        topContainer.innerHTML += html;
+                    });
+                } else {
+                    document.getElementById('section-top').classList.remove('hidden');
+                    topContainer.innerHTML = '<p class="text-slate-400 italic">No candidates met the high standards for Top Selection.</p>';
+                }
+
+                // --- RENDER GOOD FIT ---
+                if (goodCandidates.length > 0) {
+                    document.getElementById('section-good').classList.remove('hidden');
+                    goodCandidates.forEach((item) => {
+                        const html = createResultCard(item, 0, 'good');
+                        goodContainer.innerHTML += html;
+                    });
+                }
+
+                // --- RENDER REJECTED ---
+                if (rejectedCandidates.length > 0) {
+                    document.getElementById('section-rejected').classList.remove('hidden');
+                    rejectedCandidates.forEach((item) => {
+                        const html = createResultCard(item, 0, 'rejected');
+                        rejectedContainer.innerHTML += html;
+                    });
+                }
+
+                loader.classList.add('hidden');
+
+            } catch (err) {
+                console.error(err);
+                alert("Processing failed: " + err.message);
+                loader.classList.add('hidden');
+                resetBatchAnalysis();
+            }
+        }
+
+        function createResultCard(item, rank, type) {
+            let rankBadge = '';
+            let scoreColor = '';
+            
+            if (type === 'top') {
+                rankBadge = `<div class="absolute -top-3 -left-3 w-8 h-8 rounded-full flex items-center justify-center font-bold shadow-sm ${rank===1?'bg-yellow-400 text-white':rank===2?'bg-slate-400 text-white':'bg-orange-400 text-white'}">#${rank}</div>`;
+                scoreColor = 'text-green-600';
+            } else if (type === 'good') {
+                rankBadge = `<span class="font-bold text-indigo-400 mr-4 text-xs bg-indigo-50 px-2 py-1 rounded">Good Fit</span>`;
+                scoreColor = 'text-blue-600';
+            } else {
+                rankBadge = `<span class="font-bold text-red-400 mr-4 text-xs bg-red-50 px-2 py-1 rounded">Rejected</span>`;
+                scoreColor = 'text-red-600';
+            }
+
+            // Highlight strict score display
+            return `
+            <div class="relative bg-white p-6 rounded-xl border ${type === 'rejected' ? 'border-red-200 bg-red-50/50' : 'border-slate-200'} shadow-sm flex flex-col md:flex-row gap-6 items-start md:items-center hover:shadow-md transition-shadow">
+                ${rankBadge}
+                <div class="flex-1">
+                    <h4 class="text-lg font-bold text-slate-800">${item.filename}</h4>
+                    <p class="text-sm ${type === 'rejected' ? 'text-red-600 font-bold' : 'text-slate-500'} mt-1 line-clamp-2">${item.summary}</p>
+                </div>
+                <div class="flex flex-col items-end min-w-[100px]">
+                    <span class="text-3xl font-bold ${scoreColor}">${item.score}</span>
+                    <span class="text-xs uppercase font-bold text-slate-400">Match Score</span>
+                </div>
+            </div>
+            `;
+        }
+
+        // --- History Logic ---
+        async function loadHistory() {
+            try {
+                const res = await fetch('http://127.0.0.1:5000/history');
+                const data = await res.json();
+                
+                const singleList = document.getElementById('history-single-list');
+                const batchList = document.getElementById('history-batch-list');
+                
+                singleList.innerHTML = '';
+                batchList.innerHTML = '';
+                
+                if(data.single.length === 0) singleList.innerHTML = '<p class="text-center text-slate-400">No history yet.</p>';
+                else {
+                    data.single.forEach(item => {
+                        const score = item.analysis.ats_score;
+                        const scoreColor = score >= 80 ? 'text-green-600' : score >= 60 ? 'text-yellow-600' : 'text-red-600';
+                        singleList.innerHTML += `
+                            <details class="bg-slate-50 border border-slate-200 rounded-lg group">
+                                <summary class="p-4 cursor-pointer hover:bg-slate-100 flex justify-between items-center font-medium">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-8 h-8 rounded-full bg-white border border-slate-200 flex items-center justify-center text-slate-400 group-open:text-indigo-600 group-open:border-indigo-200"><i class="fa-solid fa-file"></i></div>
+                                        <div><p class="text-sm text-slate-800 font-bold">${item.filename}</p><p class="text-xs text-slate-400">${item.timestamp}</p></div>
+                                    </div>
+                                    <span class="${scoreColor} font-bold text-lg">${score}</span>
+                                </summary>
+                                <div class="p-4 pt-0 text-sm text-slate-600 border-t border-slate-100 mt-2 bg-white rounded-b-lg">
+                                    <p class="mb-2"><strong>Summary:</strong> ${item.analysis.summary}</p>
+                                </div>
+                            </details>
+                        `;
+                    });
+                }
+                
+                if(data.batch.length === 0) batchList.innerHTML = '<p class="text-center text-slate-400">No history yet.</p>';
+                else {
+                    data.batch.forEach(item => {
+                        const icon = 'fa-layer-group';
+                        const topCandidate = item.results[0] || {filename: 'None', score: 0};
+                        
+                        batchList.innerHTML += `
+                            <details class="bg-slate-50 border border-slate-200 rounded-lg group">
+                                <summary class="p-4 cursor-pointer hover:bg-slate-100 flex justify-between items-center font-medium">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-8 h-8 rounded-full bg-white border border-slate-200 flex items-center justify-center text-slate-400 group-open:text-indigo-600 group-open:border-indigo-200">
+                                            <i class="fa-solid ${icon}"></i>
+                                        </div>
+                                        <div>
+                                            <p class="text-sm text-slate-800 font-bold">Batch: ${item.files_processed} Files</p>
+                                            <p class="text-xs text-slate-400">${item.timestamp}</p>
+                                        </div>
+                                    </div>
+                                    <span class="text-xs bg-indigo-100 text-indigo-700 px-2 py-1 rounded">Top ${item.top_n_requested}</span>
+                                </summary>
+                                <div class="p-4 pt-0 text-sm text-slate-600 border-t border-slate-100 mt-2 bg-white rounded-b-lg">
+                                    <p class="font-bold mb-2 text-green-700">🏆 Winner: ${topCandidate.filename} (${topCandidate.score})</p>
+                                    <ul class="list-disc pl-4 space-y-1">
+                                        ${item.results.slice(1, 3).map(r => `<li>${r.filename}: ${r.score}</li>`).join('')}
+                                    </ul>
+                                </div>
+                            </details>
+                        `;
+                    });
+                }
+            } catch (err) { console.error(err); }
+        }
+
+        async function clearHistory() {
+            if(confirm("Are you sure you want to clear all history? This cannot be undone.")) {
+                try {
+                    await fetch('http://127.0.0.1:5000/clear_history', { method: 'POST' });
+                    loadHistory(); 
+                } catch(err) {
+                    alert("Failed to clear history.");
+                }
+            }
+        }
+    </script>
+</body>
+</html>

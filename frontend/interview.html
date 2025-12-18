@@ -1,0 +1,1049 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Mockify AI Interview</title>
+
+<!-- Dependencies -->
+<script src="https://cdn.tailwindcss.com"></script>
+<!-- FIX: Use specific UMD build for Lucide to ensure global 'lucide' variable -->
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script> 
+<!-- HTML2PDF -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<!-- Ace Editor -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.32.7/ace.js"></script>
+
+<style>
+    :root {
+        --color-bg: #050508;
+        --glass-bg: rgba(30, 41, 59, 0.4);
+        --glass-border: rgba(255, 255, 255, 0.1);
+        --accent: #6366f1;
+    }
+    
+    body { 
+        background-color: var(--color-bg); 
+        color: white; 
+        font-family: 'Inter', sans-serif;
+        overflow: hidden; 
+    }
+
+    .glass-panel {
+        background: var(--glass-bg);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid var(--glass-border);
+    }
+
+    /* PDF Specific Styles */
+    .pdf-mode {
+        background-color: #0b0c15 !important; 
+        color: white !important;
+        padding: 40px !important;
+    }
+    .pdf-mode .glass-panel {
+        background: #1e293b !important;
+        backdrop-filter: none !important;
+        border: 1px solid #334155 !important;
+        box-shadow: none !important;
+    }
+    .pdf-mode h2, .pdf-mode h3 { color: #f8fafc !important; }
+    .pdf-mode p, .pdf-mode li { color: #cbd5e1 !important; }
+
+    @keyframes slideInRight { from { transform: translateX(50px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+    .animate-slide-in { animation: slideInRight 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+    .animate-fade-in { animation: fadeIn 0.5s ease-out forwards; }
+    .view-hidden { display: none !important; }
+    .view-active { display: flex !important; flex-direction: column; height: 100%; }
+
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #0f172a; }
+    ::-webkit-scrollbar-thumb { background: #4f46e5; border-radius: 3px; }
+
+    .card-selected {
+        border-color: #6366f1 !important;
+        box-shadow: 0 0 15px rgba(99, 102, 241, 0.2);
+        background: rgba(99, 102, 241, 0.1) !important;
+    }
+</style>
+</head>
+
+<body class="h-screen w-screen flex flex-col relative">
+
+<!-- VIEW 1: DASHBOARD -->
+<div id="view-dashboard" class="view-active absolute inset-0 z-50 bg-[#050508] p-8 overflow-y-auto">
+    <div class="max-w-6xl mx-auto space-y-8">
+        <header class="flex justify-between items-center pb-6 border-b border-white/10">
+            <div class="flex items-center gap-8">
+                <a href="dashboard.html" class="flex items-center gap-2 px-4 py-2 bg-slate-800/50 hover:bg-slate-700 rounded-lg text-slate-400 hover:text-white transition-colors border border-white/5 text-sm font-medium group">
+                    <i data-lucide="arrow-left" class="w-4 h-4 group-hover:-translate-x-1 transition-transform"></i>
+                    Back to main Dashboard
+                </a>
+
+                <div>
+                    <h1 class="text-3xl font-bold text-white tracking-tight flex items-center gap-3">
+                        <i data-lucide="bot" class="w-8 h-8 text-indigo-500"></i> Mockify AI
+                    </h1>
+                    <p class="text-slate-400 mt-1">Your AI Interview Coach & Tracker</p>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-4">
+                <div class="bg-indigo-500/10 px-4 py-2 rounded-full border border-indigo-500/20 text-indigo-300 text-sm font-medium">
+                    <span id="dash-date">Today</span>
+                </div>
+            </div>
+        </header>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="glass-panel p-6 rounded-2xl relative overflow-hidden group">
+                <div class="absolute right-0 top-0 w-32 h-32 bg-indigo-500/10 rounded-full blur-3xl -mr-16 -mt-16 transition-all group-hover:bg-indigo-500/20"></div>
+                <h3 class="text-slate-400 text-sm font-medium mb-2">Total Interviews</h3>
+                <div class="text-4xl font-bold text-white flex items-baseline gap-2">
+                    <span id="stat-total">0</span>
+                </div>
+            </div>
+
+            <div class="glass-panel p-6 rounded-2xl relative overflow-hidden group">
+                <div class="absolute right-0 top-0 w-32 h-32 bg-purple-500/10 rounded-full blur-3xl -mr-16 -mt-16 transition-all group-hover:bg-purple-500/20"></div>
+                <h3 class="text-slate-400 text-sm font-medium mb-2">Avg. Performance</h3>
+                <div class="text-4xl font-bold text-white flex items-baseline gap-2">
+                    <span id="stat-score">0</span>
+                    <span class="text-sm text-slate-500 font-normal">/ 100</span>
+                </div>
+            </div>
+
+            <div class="glass-panel p-6 rounded-2xl flex items-center justify-between border-indigo-500/30 hover:border-indigo-500 transition-colors cursor-pointer" onclick="goToWizard()">
+                <div>
+                    <h3 class="text-white text-lg font-bold mb-1">Start New Interview</h3>
+                    <p class="text-indigo-300 text-xs">Choose Company & Role</p>
+                </div>
+                <div class="w-12 h-12 rounded-full bg-indigo-600 flex items-center justify-center shadow-lg shadow-indigo-500/30 group-hover:scale-110 transition-transform">
+                    <i data-lucide="play" class="w-5 h-5 text-white ml-1"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="glass-panel rounded-2xl p-6">
+            <h3 class="text-white font-bold text-lg mb-4">Interview History</h3>
+            <div class="space-y-4" id="history-list">
+                <div class="text-slate-500 text-sm italic">Loading history...</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- VIEW 2: WIZARD -->
+<div id="view-wizard" class="view-hidden absolute inset-0 z-50 flex flex-col bg-[#050508]">
+    <header class="h-28 flex flex-col justify-center items-center relative z-20 bg-[#050508] border-b border-white/10">
+        <div class="w-full max-w-3xl px-6">
+            <div class="flex items-center justify-between relative">
+                <div id="progress-line" class="absolute left-0 top-1/2 -translate-y-1/2 h-1 bg-indigo-600 rounded-full -z-10 transition-all duration-500" style="width: 0%"></div>
+                <div class="step-indicator" data-step="1"><div class="w-10 h-10 rounded-full bg-indigo-600 flex items-center justify-center text-sm font-bold shadow-[0_0_10px_rgba(99,102,241,0.5)]">1</div></div>
+                <div class="step-indicator" data-step="2"><div class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-sm font-bold text-slate-400 border border-slate-700">2</div></div>
+                <div class="step-indicator" data-step="3"><div class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-sm font-bold text-slate-400 border border-slate-700">3</div></div>
+                <div class="step-indicator" data-step="4"><div class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-sm font-bold text-slate-400 border border-slate-700">4</div></div>
+                <div class="step-indicator" data-step="5"><div class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-sm font-bold text-slate-400 border border-slate-700">5</div></div>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-1 overflow-hidden relative w-full max-w-5xl mx-auto p-4 md:p-8 flex flex-col justify-center mt-12">
+        <!-- Step 1: Company -->
+        <div id="step-1" class="step-content view-active animate-slide-in h-full flex flex-col">
+            <div class="flex justify-between items-center mb-6">
+                <div><h2 class="text-3xl font-bold text-white">Target Company</h2><p class="text-slate-400 text-sm">Select the company.</p></div>
+                <div class="flex gap-3">
+                    <button class="px-4 py-2 text-slate-400 hover:text-white text-sm" onclick="goToDashboard()">Back to Dashboard</button>
+                    <button id="btn-next-1" class="hidden px-6 py-2 bg-indigo-600 text-white rounded-lg shadow-lg" onclick="nextStep(2)">Next</button>
+                </div>
+            </div>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 overflow-y-auto pr-2 pb-4">
+                <!-- FAANG -->
+                <div class="company-card group cursor-pointer glass-panel p-6 rounded-2xl flex flex-col items-center gap-4 hover:bg-slate-800/50 transition-all border border-white/5" onclick="selectCompany(this, 'Google')">
+                    <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-lg"><img src="./assets/clogo1.png" class="w-8 h-8 object-contain" alt="G"></div><span class="font-semibold">Google</span>
+                </div>
+                <div class="company-card group cursor-pointer glass-panel p-6 rounded-2xl flex flex-col items-center gap-4 hover:bg-slate-800/50 transition-all border border-white/5" onclick="selectCompany(this, 'Amazon')">
+                    <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-lg"><img src="./assets/clogo2.png" class="w-8 h-8 object-contain" alt="A"></div><span class="font-semibold">Amazon</span>
+                </div>
+                <div class="company-card group cursor-pointer glass-panel p-6 rounded-2xl flex flex-col items-center gap-4 hover:bg-slate-800/50 transition-all border border-white/5" onclick="selectCompany(this, 'Meta')">
+                    <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-lg"><img src="./assets/clogo3.png" class="w-8 h-8 object-contain" alt="M"></div><span class="font-semibold">Meta</span>
+                </div>
+                <div class="company-card group cursor-pointer glass-panel p-6 rounded-2xl flex flex-col items-center gap-4 hover:bg-slate-800/50 transition-all border border-white/5" onclick="selectCompany(this, 'Netflix')">
+                    <div class="w-12 h-12 bg-black rounded-full flex items-center justify-center shadow-lg border border-red-600"><span class="text-red-600 font-bold text-xl">N</span></div><span class="font-semibold">Netflix</span>
+                </div>
+                <!-- Service Based -->
+                <div class="company-card group cursor-pointer glass-panel p-6 rounded-2xl flex flex-col items-center gap-4 hover:bg-slate-800/50 transition-all border border-white/5" onclick="selectCompany(this, 'TCS')">
+                    <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-lg"><span class="text-blue-600 font-bold text-lg">TCS</span></div><span class="font-semibold">TCS</span>
+                </div>
+                <div class="company-card group cursor-pointer glass-panel p-6 rounded-2xl flex flex-col items-center gap-4 hover:bg-slate-800/50 transition-all border border-white/5" onclick="selectCompany(this, 'Infosys')">
+                    <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-lg"><span class="text-blue-500 font-bold text-lg">INFY</span></div><span class="font-semibold">Infosys</span>
+                </div>
+                <div class="company-card group cursor-pointer glass-panel p-6 rounded-2xl flex flex-col items-center gap-4 hover:bg-slate-800/50 transition-all border border-white/5" onclick="selectCompany(this, 'Wipro')">
+                    <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-lg"><span class="text-green-600 font-bold text-lg">W</span></div><span class="font-semibold">Wipro</span>
+                </div>
+                <div class="company-card group cursor-pointer glass-panel p-6 rounded-2xl flex flex-col items-center gap-4 hover:bg-slate-800/50 transition-all border border-white/5" onclick="selectCompany(this, 'HCL Tech')">
+                    <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-lg"><span class="text-blue-800 font-bold text-lg">HCL</span></div><span class="font-semibold">HCL Tech</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 2: Role -->
+        <div id="step-2" class="step-content view-hidden h-full flex flex-col">
+            <div class="flex justify-between items-center mb-6">
+                <div><h2 class="text-3xl font-bold text-white">Target Role</h2></div>
+                <div class="flex gap-3">
+                    <button class="px-4 py-2 text-slate-400 hover:text-white" onclick="prevStep(1)">Back</button>
+                    <button id="btn-next-2" class="hidden px-6 py-2 bg-indigo-600 text-white rounded-lg shadow-lg" onclick="nextStep(3)">Next</button>
+                </div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="role-card cursor-pointer glass-panel p-6 rounded-2xl flex items-center gap-6 hover:bg-slate-800/50 group" onclick="selectRole(this, 'Software Engineer')">
+                    <div class="w-14 h-14 rounded-xl bg-indigo-500/20 flex items-center justify-center text-indigo-400"><i data-lucide="code-2" class="w-7 h-7"></i></div>
+                    <div class="flex-1"><h3 class="text-lg font-bold">Software Engineer</h3><p class="text-xs text-slate-400">Full Stack / General</p></div>
+                    <div class="role-check w-6 h-6 rounded-full border border-slate-600 flex items-center justify-center"><div class="w-3 h-3 rounded-full bg-white opacity-0"></div></div>
+                </div>
+                <div class="role-card cursor-pointer glass-panel p-6 rounded-2xl flex items-center gap-6 hover:bg-slate-800/50 group" onclick="selectRole(this, 'Backend Engineer')">
+                    <div class="w-14 h-14 rounded-xl bg-emerald-500/20 flex items-center justify-center text-emerald-400"><i data-lucide="server" class="w-7 h-7"></i></div>
+                    <div class="flex-1"><h3 class="text-lg font-bold">Backend Engineer</h3><p class="text-xs text-slate-400">API / Systems</p></div>
+                    <div class="role-check w-6 h-6 rounded-full border border-slate-600 flex items-center justify-center"><div class="w-3 h-3 rounded-full bg-white opacity-0"></div></div>
+                </div>
+                <div class="role-card cursor-pointer glass-panel p-6 rounded-2xl flex items-center gap-6 hover:bg-slate-800/50 group" onclick="selectRole(this, 'Data Analyst')">
+                    <div class="w-14 h-14 rounded-xl bg-orange-500/20 flex items-center justify-center text-orange-400"><i data-lucide="bar-chart-2" class="w-7 h-7"></i></div>
+                    <div class="flex-1"><h3 class="text-lg font-bold">Data Analyst</h3><p class="text-xs text-slate-400">SQL / Visualization</p></div>
+                    <div class="role-check w-6 h-6 rounded-full border border-slate-600 flex items-center justify-center"><div class="w-3 h-3 rounded-full bg-white opacity-0"></div></div>
+                </div>
+                <div class="role-card cursor-pointer glass-panel p-6 rounded-2xl flex items-center gap-6 hover:bg-slate-800/50 group" onclick="selectRole(this, 'AI/ML Engineer')">
+                    <div class="w-14 h-14 rounded-xl bg-purple-500/20 flex items-center justify-center text-purple-400"><i data-lucide="brain-circuit" class="w-7 h-7"></i></div>
+                    <div class="flex-1"><h3 class="text-lg font-bold">AI/ML Engineer</h3><p class="text-xs text-slate-400">Models / Training</p></div>
+                    <div class="role-check w-6 h-6 rounded-full border border-slate-600 flex items-center justify-center"><div class="w-3 h-3 rounded-full bg-white opacity-0"></div></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 3: Round -->
+        <div id="step-3" class="step-content view-hidden h-full flex flex-col">
+            <div class="flex justify-between items-center mb-6">
+                <div><h2 class="text-3xl font-bold text-white">Select Round</h2></div>
+                <div class="flex gap-3">
+                    <button class="px-4 py-2 text-slate-400 hover:text-white" onclick="prevStep(2)">Back</button>
+                    <button id="btn-next-3" class="hidden px-6 py-2 bg-indigo-600 text-white rounded-lg shadow-lg" onclick="nextStep(4)">Next</button>
+                </div>
+            </div>
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                <div class="round-card cursor-pointer glass-panel p-4 rounded-xl flex flex-col items-center gap-3 hover:bg-slate-800/50 text-center" onclick="selectRound(this, 'Phone Screen')">
+                    <div class="w-10 h-10 rounded-lg bg-blue-500/20 text-blue-400 flex items-center justify-center"><i data-lucide="phone" class="w-5 h-5"></i></div>
+                    <span class="font-medium text-slate-200">Phone Screen</span>
+                </div>
+                <div class="round-card cursor-pointer glass-panel p-4 rounded-xl flex flex-col items-center gap-3 hover:bg-slate-800/50 text-center" onclick="selectRound(this, 'HR Round')">
+                    <div class="w-10 h-10 rounded-lg bg-pink-500/20 text-pink-400 flex items-center justify-center"><i data-lucide="users" class="w-5 h-5"></i></div>
+                    <span class="font-medium text-slate-200">HR Round</span>
+                </div>
+                <div class="round-card cursor-pointer glass-panel p-4 rounded-xl flex flex-col items-center gap-3 hover:bg-slate-800/50 text-center" onclick="selectRound(this, 'Technical Coding')">
+                    <div class="w-10 h-10 rounded-lg bg-green-500/20 text-green-400 flex items-center justify-center"><i data-lucide="terminal-square" class="w-5 h-5"></i></div>
+                    <span class="font-medium text-slate-200">Technical Coding</span>
+                </div>
+                <div class="round-card cursor-pointer glass-panel p-4 rounded-xl flex flex-col items-center gap-3 hover:bg-slate-800/50 text-center" onclick="selectRound(this, 'Technical II')">
+                    <div class="w-10 h-10 rounded-lg bg-red-500/20 text-red-400 flex items-center justify-center"><i data-lucide="code" class="w-5 h-5"></i></div>
+                    <span class="font-medium text-slate-200">Technical II</span>
+                </div>
+                <div class="round-card cursor-pointer glass-panel p-4 rounded-xl flex flex-col items-center gap-3 hover:bg-slate-800/50 text-center" onclick="selectRound(this, 'System Design')">
+                    <div class="w-10 h-10 rounded-lg bg-orange-500/20 text-orange-400 flex items-center justify-center"><i data-lucide="network" class="w-5 h-5"></i></div>
+                    <span class="font-medium text-slate-200">System Design</span>
+                </div>
+                 <div class="round-card cursor-pointer glass-panel p-4 rounded-xl flex flex-col items-center gap-3 hover:bg-slate-800/50 text-center" onclick="selectRound(this, 'Behavioral')">
+                    <div class="w-10 h-10 rounded-lg bg-cyan-500/20 text-cyan-400 flex items-center justify-center"><i data-lucide="message-circle" class="w-5 h-5"></i></div>
+                    <span class="font-medium text-slate-200">Behavioral</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 4 & 5 -->
+        <div id="step-4" class="step-content view-hidden h-full flex flex-col">
+            <div class="flex justify-between items-center mb-6">
+                <div><h2 class="text-3xl font-bold text-white">Customize</h2></div>
+                <div class="flex gap-3">
+                    <button class="px-4 py-2 text-slate-400 hover:text-white" onclick="prevStep(3)">Back</button>
+                    <button class="px-6 py-2 bg-indigo-600 text-white rounded-lg shadow-lg" onclick="nextStep(5)">Next</button>
+                </div>
+            </div>
+            <div class="glass-panel p-8 rounded-2xl space-y-8">
+                <div class="space-y-3">
+                    <label class="block text-sm font-medium text-slate-300">Difficulty</label>
+                    <select id="select-difficulty" class="w-full bg-slate-900/80 border border-slate-700 text-white rounded-xl p-4"><option>Easy</option><option selected>Medium</option><option>Hard</option></select>
+                </div>
+                <div class="space-y-3">
+                    <label class="block text-sm font-medium text-slate-300">Persona</label>
+                    <select id="select-persona" class="w-full bg-slate-900/80 border border-slate-700 text-white rounded-xl p-4"><option selected>Normal</option><option>Strict</option><option>Friendly</option></select>
+                </div>
+            </div>
+        </div>
+
+        <div id="step-5" class="step-content view-hidden h-full flex flex-col">
+            <div class="flex justify-between items-center mb-6">
+                <div><h2 class="text-3xl font-bold text-white">Final Setup</h2></div>
+                <div class="flex gap-3"><button class="px-4 py-2 text-slate-400 hover:text-white" onclick="prevStep(4)">Back</button></div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 h-full">
+                <div class="flex flex-col gap-4">
+                    <div class="glass-panel rounded-2xl aspect-video relative overflow-hidden flex items-center justify-center bg-black/50 border border-slate-700">
+                        <video id="preview-video" autoplay muted playsinline class="w-full h-full object-cover hidden"></video>
+                        <div id="camera-placeholder" class="text-center"><i data-lucide="camera-off" class="w-12 h-12 text-slate-600 mx-auto mb-2"></i><span class="text-slate-500">Camera Off</span></div>
+                    </div>
+                    <button id="toggle-camera-btn" onclick="toggleCameraWizard()" class="w-full py-3 bg-slate-800 text-white rounded-xl flex justify-center items-center gap-2 border border-slate-700"><i data-lucide="video"></i> Enable Camera</button>
+                </div>
+                <div class="flex flex-col justify-between">
+                    <div class="space-y-6">
+                        <div class="space-y-2">
+                            <label class="block text-sm font-medium text-slate-300">Your Name</label>
+                            <input type="text" id="input-name" placeholder="John Doe" class="w-full bg-slate-900/80 border border-slate-700 text-white rounded-xl p-4">
+                        </div>
+                    </div>
+                    <button id="btn-start-session" disabled onclick="launchInterview()" class="w-full py-4 mt-8 bg-slate-800 text-slate-500 rounded-xl font-bold text-lg disabled:opacity-50">Start Session</button>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<!-- VIEW 3: INTERVIEW -->
+<div id="view-interview" class="view-hidden absolute inset-0 z-40 bg-[#050508] flex flex-col">
+    <header class="h-16 border-b border-white/10 flex items-center justify-between px-6 bg-[#0a0a0f]">
+      <!-- Header Left: AI Status & Timer -->
+      <div class="flex items-center gap-4">
+         <!-- Back to Dashboard -->
+         <button onclick="goToDashboard()" class="text-slate-400 hover:text-white mr-2" title="Back to Dashboard">
+             <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
+         </button>
+         
+         <div class="flex items-center gap-2 px-3 py-1 rounded bg-slate-800/50 border border-white/5">
+             <span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
+             <span id="ai-status" class="text-indigo-400 text-sm font-medium">Initializing...</span>
+         </div>
+         <div class="flex items-center gap-2 px-3 py-1 rounded bg-slate-800/50 border border-white/5" id="timer-box">
+             <i data-lucide="timer" class="w-4 h-4 text-orange-400"></i>
+             <span id="timer-display" class="text-white font-mono font-bold">30:00</span>
+         </div>
+      </div>
+      
+      <!-- Header Right: Finish -->
+      <button onclick="endSession()" class="text-red-400 text-sm hover:text-red-300 bg-red-500/10 hover:bg-red-500/20 px-4 py-2 rounded transition-colors font-medium">Finish Interview</button>
+    </header>
+    
+    <div class="flex flex-1 overflow-hidden relative">
+        <!-- LEFT: Video & Info -->
+        <div class="w-[350px] border-r border-white/10 flex flex-col hidden md:flex shrink-0">
+            <div class="flex-1 flex flex-col items-center justify-center bg-slate-900/50 relative overflow-hidden">
+                <div class="absolute inset-0 bg-gradient-to-b from-indigo-500/5 to-purple-500/5"></div>
+                <div class="relative z-10 p-6 rounded-full bg-indigo-500/10 border border-indigo-500/20"><i data-lucide="bot" class="w-16 h-16 text-indigo-400"></i></div>
+                <div class="mt-4 text-center"><h3 class="text-white font-medium">AI Interviewer</h3><p class="text-xs text-indigo-400/80" id="ai-persona-label">Professional</p></div>
+            </div>
+            <div class="h-[250px] bg-black relative border-t border-white/10">
+                <video id="main-user-video" autoplay muted playsinline class="w-full h-full object-cover transform scale-x-[-1]"></video>
+                <div class="absolute bottom-2 left-2 px-2 py-1 bg-black/60 rounded text-xs text-white" id="user-label">Candidate</div>
+            </div>
+        </div>
+        
+        <!-- CENTER: Chat -->
+        <div class="flex-1 flex flex-col bg-[#0f1016]">
+            <div class="h-10 border-b border-white/5 flex items-center px-4 gap-4 text-xs text-slate-500">
+                <div class="flex items-center gap-1"><i data-lucide="building-2" class="w-3 h-3"></i> <span id="display-company">Company</span></div>
+                <div class="w-px h-3 bg-white/10"></div>
+                <div class="flex items-center gap-1"><i data-lucide="briefcase" class="w-3 h-3"></i> <span id="display-role">Role</span></div>
+                <div class="w-px h-3 bg-white/10"></div>
+                <div class="flex items-center gap-1"><i data-lucide="target" class="w-3 h-3"></i> <span id="display-round">Round</span></div>
+            </div>
+            <div class="flex-1 overflow-y-auto p-4 space-y-4" id="transcript-box">
+                <div class="text-slate-600 text-xs italic text-center py-4">Session initialized. Waiting for AI...</div>
+            </div>
+            <div class="p-6 border-t border-white/10 bg-[#0a0a0f] flex gap-4">
+                <button id="toggle-mic-btn" onclick="toggleAnswer()" class="flex-1 bg-indigo-600 hover:bg-indigo-500 py-4 rounded-xl font-bold flex justify-center items-center gap-3 transition-all">
+                    <div class="p-2 bg-indigo-400/20 rounded-full"><i data-lucide="mic" class="w-5 h-5 text-white"></i></div>
+                    <span>Start Answer</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- RIGHT: Code Editor -->
+        <div id="code-editor-panel" class="hidden w-[500px] border-l border-white/10 flex-col bg-[#1e1e1e]">
+            <div class="h-10 bg-[#252526] flex items-center justify-between px-4 text-xs text-gray-400 border-b border-black">
+                <span>Code Editor (C++)</span>
+                <span class="text-indigo-400">Live</span>
+            </div>
+            <div id="editor" class="flex-1"></div>
+            <div class="p-4 bg-[#252526] border-t border-black">
+                <button onclick="submitCode()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white py-3 rounded-lg font-bold flex items-center justify-center gap-2">
+                    <i data-lucide="send" class="w-4 h-4"></i> Submit Code
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- VIEW 4: ANALYSIS REPORT -->
+<div id="view-analysis" class="view-hidden absolute inset-0 z-50 bg-[#050508] overflow-y-auto">
+    <div id="report-container" class="min-h-screen p-8 max-w-5xl mx-auto flex flex-col">
+        <div class="flex justify-between items-center mb-8">
+            <h2 class="text-3xl font-bold text-white">Interview Analysis</h2>
+            <div class="flex gap-4" data-html2canvas-ignore="true">
+                 <button onclick="goToDashboard()" class="px-5 py-2 rounded-lg bg-slate-800 text-slate-300 hover:text-white border border-slate-700 transition-colors">Back to Dashboard</button>
+                 <button onclick="downloadPDF()" class="px-5 py-2 rounded-lg bg-indigo-600 text-white hover:bg-indigo-500 shadow-lg shadow-indigo-500/20 transition-all flex items-center gap-2">
+                    <i data-lucide="download" class="w-4 h-4"></i> Download Report
+                 </button>
+            </div>
+        </div>
+
+        <div id="analysis-loading" class="flex-1 flex flex-col items-center justify-center py-20">
+            <div class="w-16 h-16 border-4 border-indigo-500/30 border-t-indigo-500 rounded-full animate-spin mb-6"></div>
+            <h3 class="text-xl font-medium text-white">Generating Feedback...</h3>
+            <p class="text-slate-400 mt-2 text-sm text-center max-w-md">Analyzing accuracy, logic, and depth...</p>
+        </div>
+
+        <div id="analysis-content" class="hidden space-y-8 pb-10">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Score -->
+                <div class="glass-panel p-6 rounded-2xl flex flex-col items-center justify-center text-center">
+                    <h3 class="text-slate-400 text-sm font-medium mb-4">Overall Score</h3>
+                    <div class="relative w-40 h-40">
+                        <svg class="w-full h-full transform -rotate-90">
+                            <circle cx="80" cy="80" r="70" stroke="#1e293b" stroke-width="12" fill="transparent" />
+                            <circle id="score-circle" cx="80" cy="80" r="70" stroke="#6366f1" stroke-width="12" fill="transparent" stroke-dasharray="440" stroke-dashoffset="440" class="transition-all duration-1000 ease-out" />
+                        </svg>
+                        <div class="absolute inset-0 flex items-center justify-center flex-col">
+                            <span id="score-val" class="text-4xl font-bold text-white">0</span>
+                            <span class="text-xs text-slate-500">/ 100</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Verdict -->
+                <div class="glass-panel p-6 rounded-2xl flex flex-col justify-center gap-4 col-span-2">
+                    <h3 class="text-slate-400 text-sm font-medium">Verdict & Summary</h3>
+                    <div class="flex items-center gap-4 mb-2">
+                        <div id="verdict-badge" class="px-4 py-2 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xl font-bold w-max">Passed</div>
+                    </div>
+                    <p id="analysis-summary" class="text-slate-300 text-sm leading-relaxed">Summary...</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Strengths -->
+                <div class="glass-panel p-6 rounded-2xl border-l-4 border-l-emerald-500">
+                    <h3 class="text-lg font-bold text-white mb-4 flex items-center gap-2"><i data-lucide="thumbs-up" class="w-5 h-5 text-emerald-500"></i> Key Strengths</h3>
+                    <ul id="list-strengths" class="space-y-3"></ul>
+                </div>
+                <!-- Weaknesses -->
+                <div class="glass-panel p-6 rounded-2xl border-l-4 border-l-red-500">
+                    <h3 class="text-lg font-bold text-white mb-4 flex items-center gap-2"><i data-lucide="alert-circle" class="w-5 h-5 text-red-500"></i> Areas for Improvement</h3>
+                    <ul id="list-weaknesses" class="space-y-3"></ul>
+                </div>
+            </div>
+
+            <div class="glass-panel p-8 rounded-2xl border border-indigo-500/30">
+                <h3 class="text-xl font-bold text-white mb-6 flex items-center gap-2"><i data-lucide="trending-up" class="w-6 h-6 text-indigo-400"></i> Actionable Improvement Plan</h3>
+                <div id="list-improvement" class="grid grid-cols-1 gap-4"></div>
+            </div>
+
+            <!-- Code Feedback Section (Conditional) -->
+            <div id="code-review-section" class="hidden glass-panel p-8 rounded-2xl border-t-4 border-t-purple-500">
+                <h3 class="text-xl font-bold text-white mb-4 flex items-center gap-2"><i data-lucide="code" class="w-6 h-6 text-purple-400"></i> Code Review</h3>
+                <p id="code-feedback-text" class="text-slate-300 text-sm leading-relaxed mb-4"></p>
+                <!-- Display Submitted Code (New) -->
+                <h4 class="text-sm font-bold text-slate-400 mb-2 mt-6">Submitted Code:</h4>
+                <div class="bg-[#0b0c15] p-4 rounded-lg border border-white/5 overflow-x-auto">
+                    <pre id="code-display-block" class="text-xs font-mono text-emerald-400"></pre>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+const BACKEND_URL = "http://localhost:8000";
+
+const globalState = {
+    view: 'dashboard',
+    wizardStep: 1,
+    company: "",
+    role: "",
+    round: "",
+    difficulty: "Medium",
+    persona: "Normal",
+    candidateName: "",
+    mediaStream: null,
+    
+    transcript: [], 
+    recognition: null,
+    isRecording: false,
+    timerInterval: null,
+    editor: null,
+    questionCount: 0,
+    submittedCode: null 
+};
+
+// --- HELPER: GET CLEAN CONTEXT ---
+function getContext() {
+    return {
+        company: globalState.company,
+        role: globalState.role,
+        round: globalState.round,
+        difficulty: globalState.difficulty,
+        persona: globalState.persona,
+        candidateName: globalState.candidateName,
+        transcript: globalState.transcript
+    };
+}
+
+// --- VIEW NAVIGATION ---
+function switchView(viewId) {
+    ['view-dashboard', 'view-wizard', 'view-interview', 'view-analysis'].forEach(id => {
+        document.getElementById(id).classList.remove('view-active');
+        document.getElementById(id).classList.add('view-hidden');
+    });
+    const target = document.getElementById(viewId);
+    target.classList.remove('view-hidden');
+    target.classList.add('view-active');
+    
+    if (viewId === 'view-dashboard') loadDashboardStats();
+}
+
+function goToDashboard() { 
+    // Clean up
+    if (globalState.mediaStream) globalState.mediaStream.getTracks().forEach(t => t.stop());
+    if (globalState.timerInterval) clearInterval(globalState.timerInterval);
+    window.speechSynthesis.cancel();
+    globalState.transcript = [];
+    globalState.submittedCode = null;
+    
+    switchView('view-dashboard'); 
+}
+
+function goToWizard() { 
+    globalState.wizardStep = 1;
+    globalState.transcript = []; 
+    globalState.questionCount = 0; // Reset counter
+    globalState.submittedCode = null;
+    const chatBox = document.getElementById('transcript-box');
+    if (chatBox) chatBox.innerHTML = '<div class="text-slate-600 text-xs italic text-center py-4">Session initialized. Waiting for AI...</div>';
+    updateWizardUI();
+    switchView('view-wizard'); 
+}
+
+// --- DASHBOARD LOGIC ---
+async function loadDashboardStats() {
+    try {
+        const res = await fetch(`${BACKEND_URL}/stats`);
+        if (!res.ok) throw new Error("Backend offline");
+        const data = await res.json();
+        document.getElementById('stat-total').innerText = data.total_interviews;
+        document.getElementById('stat-score').innerText = data.average_score;
+        document.getElementById('dash-date').innerText = new Date().toLocaleDateString();
+        const historyList = document.getElementById('history-list');
+        historyList.innerHTML = "";
+        if (!data.history || data.history.length === 0) {
+            historyList.innerHTML = `<div class="p-4 rounded-xl bg-slate-800/50 border border-white/5 text-slate-400 text-sm">No interviews yet. Start your first one!</div>`;
+        } else {
+            [...data.history].reverse().slice(0, 5).forEach(h => {
+                let color = "text-slate-400";
+                if(h.score > 70) color = "text-emerald-400";
+                else if(h.score < 30) color = "text-red-400";
+                else color = "text-yellow-400";
+                historyList.innerHTML += `
+                <div class="p-4 rounded-xl bg-slate-800/50 border border-white/5 text-slate-400 text-sm flex justify-between">
+                     <div><span class="text-white font-medium">${h.company}</span> - ${h.role}</div>
+                     <div class="${color} font-bold">${h.score}/100</div>
+                </div>`;
+            });
+        }
+    } catch (e) {
+        document.getElementById('stat-total').innerText = "0";
+        document.getElementById('history-list').innerHTML = `<div class="text-orange-400 text-sm p-4 border border-orange-500/30 bg-orange-500/10 rounded">⚠️ Backend Disconnected</div>`;
+    }
+}
+
+// --- WIZARD LOGIC ---
+function nextStep(target) {
+    document.getElementById(`step-${globalState.wizardStep}`).classList.add('view-hidden', 'animate-slide-out');
+    document.getElementById(`step-${globalState.wizardStep}`).classList.remove('view-active');
+    globalState.wizardStep = target;
+    const nextEl = document.getElementById(`step-${target}`);
+    nextEl.classList.remove('view-hidden');
+    nextEl.classList.add('view-active', 'animate-slide-in');
+    updateProgressBar();
+}
+
+function prevStep(target) {
+    document.getElementById(`step-${globalState.wizardStep}`).classList.add('view-hidden');
+    document.getElementById(`step-${globalState.wizardStep}`).classList.remove('view-active');
+    globalState.wizardStep = target;
+    const prevEl = document.getElementById(`step-${target}`);
+    prevEl.classList.remove('view-hidden');
+    prevEl.classList.add('view-active', 'animate-slide-in');
+    updateProgressBar();
+}
+
+function updateProgressBar() {
+    const pct = ((globalState.wizardStep - 1) / 4) * 100;
+    document.getElementById('progress-line').style.width = `${pct}%`;
+    document.querySelectorAll('.step-indicator').forEach(el => {
+        const step = parseInt(el.dataset.step);
+        const circle = el.querySelector('div');
+        if (step < globalState.wizardStep) {
+            circle.className = "w-10 h-10 rounded-full bg-indigo-600 text-white flex items-center justify-center font-bold shadow-[0_0_10px_rgba(99,102,241,0.5)]";
+            circle.innerHTML = `<i data-lucide="check" class="w-5 h-5"></i>`;
+        } else if (step === globalState.wizardStep) {
+             circle.className = "w-10 h-10 rounded-full bg-indigo-600 text-white flex items-center justify-center font-bold scale-110 shadow-[0_0_15px_rgba(99,102,241,0.6)]";
+             circle.innerText = step;
+        } else {
+             circle.className = "w-10 h-10 rounded-full bg-slate-800 text-slate-400 flex items-center justify-center font-bold border border-slate-700";
+             circle.innerText = step;
+        }
+    });
+    // FIX: Check if lucide is defined before usage
+    if (typeof lucide !== 'undefined') {
+        lucide.createIcons();
+    }
+}
+
+function updateWizardUI() {
+    document.querySelectorAll('.step-content').forEach(el => {
+        el.classList.add('view-hidden');
+        el.classList.remove('view-active');
+    });
+    document.getElementById('step-1').classList.remove('view-hidden');
+    document.getElementById('step-1').classList.add('view-active');
+    updateProgressBar();
+}
+
+function selectCompany(el, name) {
+    document.querySelectorAll('.company-card').forEach(c => c.classList.remove('card-selected'));
+    el.classList.add('card-selected');
+    globalState.company = name;
+    document.getElementById('btn-next-1').classList.remove('hidden');
+    document.getElementById('btn-next-1').classList.add('inline-flex', 'items-center');
+}
+function selectRole(el, name) {
+    document.querySelectorAll('.role-card').forEach(c => c.classList.remove('card-selected'));
+    document.querySelectorAll('.role-check div').forEach(d => d.classList.remove('opacity-100'));
+    document.querySelectorAll('.role-check').forEach(d => d.classList.remove('bg-indigo-500', 'border-indigo-500'));
+    el.classList.add('card-selected');
+    const check = el.querySelector('.role-check');
+    check.classList.add('bg-indigo-500', 'border-indigo-500');
+    check.querySelector('div').classList.add('opacity-100');
+    globalState.role = name;
+    document.getElementById('btn-next-2').classList.remove('hidden');
+    document.getElementById('btn-next-2').classList.add('inline-flex', 'items-center');
+}
+function selectRound(el, name) {
+    document.querySelectorAll('.round-card').forEach(c => c.classList.remove('card-selected'));
+    el.classList.add('card-selected');
+    globalState.round = name;
+    document.getElementById('btn-next-3').classList.remove('hidden');
+    document.getElementById('btn-next-3').classList.add('inline-flex', 'items-center');
+}
+
+async function toggleCameraWizard() {
+    try {
+        const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+        globalState.mediaStream = stream;
+        const vid = document.getElementById('preview-video');
+        vid.srcObject = stream;
+        vid.classList.remove('hidden');
+        document.getElementById('camera-placeholder').classList.add('hidden');
+        const btn = document.getElementById('toggle-camera-btn');
+        btn.classList.replace('bg-slate-800', 'bg-emerald-500/10');
+        btn.classList.add('text-emerald-400', 'border-emerald-500/20');
+        btn.innerHTML = `<i data-lucide="check"></i> Camera Active`;
+        // FIX: Check if lucide is defined before usage
+        if (typeof lucide !== 'undefined') {
+            lucide.createIcons();
+        }
+        checkFinalStart();
+    } catch (e) {
+        alert("Camera permission denied.");
+    }
+}
+
+document.getElementById('input-name').addEventListener('input', (e) => {
+    globalState.candidateName = e.target.value;
+    checkFinalStart();
+});
+
+function checkFinalStart() {
+    const btn = document.getElementById('btn-start-session');
+    if (globalState.candidateName && globalState.mediaStream) {
+        btn.disabled = false;
+        btn.classList.replace('bg-slate-800', 'bg-indigo-600');
+        btn.classList.replace('text-slate-500', 'text-white');
+        btn.classList.add('hover:bg-indigo-500', 'shadow-lg');
+    }
+}
+
+// --- INTERVIEW LOGIC ---
+
+function startTimer() {
+    if (globalState.timerInterval) clearInterval(globalState.timerInterval);
+    
+    // Logic for Short Rounds: 5 minutes (300s) vs Standard 30 mins
+    let isShortRound = ['Phone Screen', 'Behavioral', 'HR Round'].includes(globalState.round);
+    let duration = isShortRound ? 5 * 60 : 30 * 60;
+    
+    const display = document.getElementById('timer-display');
+    
+    globalState.timerInterval = setInterval(() => {
+        let minutes = parseInt(duration / 60, 10);
+        let seconds = parseInt(duration % 60, 10);
+        minutes = minutes < 10 ? "0" + minutes : minutes;
+        seconds = seconds < 10 ? "0" + seconds : seconds;
+        display.textContent = minutes + ":" + seconds;
+        if (--duration < 0) {
+            clearInterval(globalState.timerInterval);
+            alert("Time's up! Ending session.");
+            endSession();
+        }
+    }, 1000);
+}
+
+function launchInterview() {
+    // 1. Set Labels
+    document.getElementById('display-company').innerText = globalState.company;
+    document.getElementById('display-role').innerText = globalState.role;
+    document.getElementById('display-round').innerText = globalState.round;
+    document.getElementById('ai-persona-label').innerText = globalState.persona;
+    document.getElementById('user-label').innerText = globalState.candidateName;
+    
+    if (globalState.mediaStream) {
+        document.getElementById('main-user-video').srcObject = globalState.mediaStream;
+    }
+
+    // 2. Setup Code Editor / Timer logic
+    const codingRounds = ['Technical Coding', 'Technical II', 'System Design'];
+    const editorPanel = document.getElementById('code-editor-panel');
+    const timerBox = document.getElementById('timer-box');
+    
+    if (codingRounds.includes(globalState.round)) {
+        // Coding Mode
+        editorPanel.classList.remove('hidden');
+        editorPanel.classList.add('flex');
+        timerBox.style.display = 'flex';
+        
+        if (!globalState.editor) {
+            globalState.editor = ace.edit("editor");
+            globalState.editor.setTheme("ace/theme/twilight");
+            globalState.editor.session.setMode("ace/mode/c_cpp");
+            globalState.editor.setFontSize(14);
+        }
+        if (globalState.round === 'System Design') {
+             globalState.editor.session.setMode("ace/mode/text");
+             globalState.editor.setValue("# System Design Configuration / Notes\n\n");
+        } else {
+             globalState.editor.session.setMode("ace/mode/c_cpp");
+             globalState.editor.setValue("// Write your C++ Solution here...\n#include <iostream>\n\n");
+        }
+    } else {
+        // Non-Coding Mode (Phone/HR/Behavioral)
+        editorPanel.classList.add('hidden');
+        editorPanel.classList.remove('flex');
+        timerBox.style.display = 'flex'; // Still show timer for short rounds
+    }
+
+    startTimer();
+    switchView('view-interview');
+    startAIConversation();
+}
+
+async function submitCode() {
+    const code = globalState.editor.getValue();
+    globalState.submittedCode = code; // Store for report
+    addTranscript('You', `[SUBMITTED CODE]:\n${code}`);
+    
+    try {
+        const res = await fetch(`${BACKEND_URL}/interview/ask`, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ 
+                prompt: code, 
+                type: 'code_analysis', 
+                context: getContext() 
+            })
+        });
+        if(!res.ok) throw new Error("Backend offline");
+        const data = await res.json();
+        addTranscript('AI', data.reply);
+        speak(data.reply);
+    } catch (e) {
+        addTranscript('AI', "(Demo) Code looks good. How would you optimize the space complexity?");
+    }
+}
+
+function addTranscript(sender, text) {
+    const box = document.getElementById('transcript-box');
+    const div = document.createElement('div');
+    globalState.transcript.push(`${sender}: ${text}`); 
+    
+    if (sender === "AI") {
+        globalState.questionCount++;
+        div.className = "bg-indigo-500/10 border border-indigo-500/20 p-4 rounded-2xl rounded-tl-none mb-4 mr-12 text-sm leading-relaxed";
+    } else {
+        div.className = "bg-slate-800 border border-white/5 p-4 rounded-2xl rounded-tr-none mb-4 ml-12 text-sm leading-relaxed";
+    }
+    
+    const formattedText = text.replace(/\n/g, '<br>');
+    div.innerHTML = `<strong class="block mb-1 text-xs opacity-50 uppercase tracking-wider">${sender}</strong>${formattedText}`;
+    box.appendChild(div);
+    box.scrollTop = box.scrollHeight;
+}
+
+function speak(text) {
+    window.speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(text);
+    
+    u.onend = () => {
+        document.getElementById('ai-status').innerText = "Listening...";
+        
+        // AUTO-TERMINATION LOGIC
+        const isShortRound = ['Phone Screen', 'Behavioral', 'HR Round'].includes(globalState.round);
+        if (isShortRound && text.includes("Thank you for the interview")) {
+             endSession(); 
+        }
+    };
+    
+    window.speechSynthesis.speak(u);
+    document.getElementById('ai-status').innerText = "Speaking...";
+    document.getElementById('ai-status').classList.add('text-indigo-400');
+}
+
+async function startAIConversation() {
+    const prompt = `Start interview for ${globalState.role} at ${globalState.company}, round is ${globalState.round}. Welcome ${globalState.candidateName}.`;
+    try {
+        const res = await fetch(`${BACKEND_URL}/interview/ask`, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ prompt: prompt, type: 'chat', context: getContext() }) 
+        });
+        if(!res.ok) throw new Error("Backend offline");
+        const data = await res.json();
+        addTranscript('AI', data.reply);
+        speak(data.reply);
+    } catch (e) {
+        console.error(e);
+        addTranscript('AI', "Hello! I'm ready to interview you. (Demo Mode: Backend not connected).");
+    }
+    initSpeech();
+}
+
+function initSpeech() {
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRecognition) return;
+    globalState.recognition = new SpeechRecognition();
+    globalState.recognition.continuous = false;
+    globalState.recognition.interimResults = false;
+    
+    globalState.recognition.onstart = () => {
+        globalState.isRecording = true;
+        const btn = document.getElementById('toggle-mic-btn');
+        btn.classList.replace('bg-indigo-600', 'bg-red-500');
+        btn.querySelector('span').innerText = "Stop Recording";
+        btn.querySelector('i').setAttribute('data-lucide', 'mic-off');
+        lucide.createIcons();
+    };
+
+    globalState.recognition.onend = () => {
+        globalState.isRecording = false;
+        const btn = document.getElementById('toggle-mic-btn');
+        btn.classList.replace('bg-red-500', 'bg-indigo-600');
+        btn.querySelector('span').innerText = "Start Answer";
+        btn.querySelector('i').setAttribute('data-lucide', 'mic');
+        lucide.createIcons();
+    };
+
+    globalState.recognition.onresult = async (event) => {
+        const text = event.results[0][0].transcript;
+        addTranscript('You', text);
+        
+        const isShortRound = ['Phone Screen', 'Behavioral', 'HR Round'].includes(globalState.round);
+        
+        if (isShortRound && globalState.questionCount >= 6) {
+             const wrapUpPrompt = "The candidate has answered the final (6th) question. Thank them for their time and mention you will now generate the analysis report. Do not ask any more questions.";
+             try {
+                const res = await fetch(`${BACKEND_URL}/interview/ask`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ prompt: wrapUpPrompt, type: 'chat', context: getContext() }) 
+                });
+                const data = await res.json();
+                addTranscript('AI', data.reply);
+                speak(data.reply); 
+             } catch(e) {
+                const manualEnd = "Thank you for your time. I will now generate your report.";
+                addTranscript('AI', manualEnd);
+                speak(manualEnd);
+             }
+             return; 
+        }
+
+        const prompt = `Candidate Answer: ${text}. Reply and ask next question.`;
+        try {
+            const res = await fetch(`${BACKEND_URL}/interview/ask`, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ prompt: prompt, type: 'chat', context: getContext() }) 
+            });
+            if(!res.ok) throw new Error("Backend offline");
+            const data = await res.json();
+            addTranscript('AI', data.reply);
+            speak(data.reply);
+        } catch (e) {
+            addTranscript('AI', "(Demo) That's a good start. (Backend unavailable)");
+        }
+    };
+}
+
+function toggleAnswer() {
+    if (!globalState.recognition) initSpeech();
+    if (globalState.isRecording) globalState.recognition.stop();
+    else globalState.recognition.start();
+}
+
+function endSession() {
+    if (globalState.mediaStream) globalState.mediaStream.getTracks().forEach(t => t.stop());
+    if (globalState.timerInterval) clearInterval(globalState.timerInterval);
+    window.speechSynthesis.cancel();
+    switchView('view-analysis');
+    generateReport();
+}
+
+// --- REPORT & PDF ---
+async function generateReport() {
+    document.getElementById('analysis-loading').classList.remove('hidden');
+    document.getElementById('analysis-content').classList.add('hidden');
+    
+    // Inject Submitted Code into Transcript for analysis if exists
+    let fullTranscript = globalState.transcript.join("\n") || "No conversation recorded.";
+    if (globalState.submittedCode) {
+        fullTranscript += `\n\n[SUBMITTED CODE]:\n${globalState.submittedCode}`;
+    }
+
+    try {
+        const res = await fetch(`${BACKEND_URL}/interview/analyze`, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ transcript: fullTranscript, context: getContext() }) 
+        });
+        if (!res.ok) throw new Error("Backend offline");
+        const data = await res.json();
+        renderReport(data.analysis);
+    } catch (e) {
+        console.warn("Using mock report");
+        const mockData = {
+            score: 0,
+            verdict: "Fail",
+            summary: "Backend unavailable. This is a demo placeholder.",
+            strengths: ["None observed"],
+            weaknesses: ["Connection Error"],
+            improvement_plan: ["Ensure Backend is running"]
+        };
+        setTimeout(() => renderReport(mockData), 2000);
+    }
+}
+
+function renderReport(data) {
+    document.getElementById('analysis-loading').classList.add('hidden');
+    document.getElementById('analysis-content').classList.remove('hidden');
+
+    const score = data.score || 0;
+    const circle = document.getElementById('score-circle');
+    const radius = circle.r.baseVal.value;
+    const circumference = radius * 2 * Math.PI;
+    const offset = circumference - (score / 100) * circumference;
+    
+    circle.style.strokeDashoffset = offset;
+    document.getElementById('score-val').innerText = score;
+
+    const verdictEl = document.getElementById('verdict-badge');
+    verdictEl.innerText = data.verdict;
+    verdictEl.className = data.verdict === "Fail" 
+        ? "px-4 py-2 rounded-lg bg-red-500/10 border border-red-500/20 text-red-400 text-xl font-bold w-max"
+        : "px-4 py-2 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xl font-bold w-max";
+
+    document.getElementById('analysis-summary').innerText = data.summary;
+
+    const createList = (id, items, icon) => {
+        const ul = document.getElementById(id);
+        ul.innerHTML = "";
+        const listItems = Array.isArray(items) ? items : ["None observed"];
+        listItems.forEach(item => {
+            ul.innerHTML += `<li class="flex items-start gap-3 text-slate-300 text-sm"><i data-lucide="${icon}" class="w-4 h-4 mt-0.5 text-slate-500 flex-shrink-0"></i> ${item}</li>`;
+        });
+    };
+
+    createList('list-strengths', data.strengths, 'check-circle');
+    createList('list-weaknesses', data.weaknesses, 'x-circle');
+    
+    const planDiv = document.getElementById('list-improvement');
+    planDiv.innerHTML = "";
+    const planItems = Array.isArray(data.improvement_plan) ? data.improvement_plan : ["No specific plan generated."];
+    planItems.forEach((step, i) => {
+        planDiv.innerHTML += `
+            <div class="flex gap-4 p-4 rounded-xl bg-indigo-500/5 border border-indigo-500/10">
+                <div class="w-8 h-8 rounded-full bg-indigo-600 flex items-center justify-center font-bold text-white flex-shrink-0">${i+1}</div>
+                <p class="text-slate-300 text-sm mt-1">${step}</p>
+            </div>
+        `;
+    });
+
+    // Handle Code Feedback Display
+    const codeSection = document.getElementById('code-review-section');
+    if (data.code_feedback && data.code_feedback !== "N/A" && globalState.submittedCode) {
+        codeSection.classList.remove('hidden');
+        document.getElementById('code-feedback-text').innerText = data.code_feedback;
+        document.getElementById('code-display-block').innerText = globalState.submittedCode;
+    } else {
+        codeSection.classList.add('hidden');
+    }
+
+    // FIX: Check if lucide is defined before calling createIcons
+    if (typeof lucide !== 'undefined') {
+        lucide.createIcons();
+    }
+}
+
+function downloadPDF() {
+    const element = document.getElementById('report-container');
+    element.classList.add('pdf-mode');
+
+    const opt = {
+      margin:       [0.3, 0.3, 0.3, 0.3], // Small margins
+      filename:     `interview-report-${globalState.candidateName}.pdf`,
+      image:        { type: 'jpeg', quality: 0.98 },
+      html2canvas:  { 
+          scale: 2, 
+          backgroundColor: "#0b0c15", 
+          useCORS: true 
+      },
+      jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
+    };
+    
+    html2pdf().set(opt).from(element).save().then(() => {
+        element.classList.remove('pdf-mode');
+    });
+}
+
+window.onload = () => {
+    loadDashboardStats();
+    // FIX: Check if lucide is defined before calling createIcons
+    if (typeof lucide !== 'undefined') {
+        lucide.createIcons();
+    } else {
+        console.warn("Lucide icons failed to load.");
+    }
+};
+</script>
+</body>
+</html>
