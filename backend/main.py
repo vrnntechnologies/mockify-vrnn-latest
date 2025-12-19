@@ -94,6 +94,13 @@ def interview_ask(req: InterviewRequest):
 def health():
     return {"status": "ok"}
 
+@app.post("/interview/start")
+def start_interview():
+    return {
+        "question": "Tell me about yourself."
+    }
+
+
 @app.post("/interview/analyze")
 def interview_analyze(req: ReportRequest):
     try:
