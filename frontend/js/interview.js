@@ -14,27 +14,27 @@ async function checkBackend() {
 async function startInterview() {
     const connected = await checkBackend();
 
-    const statusEl = document.getElementById("status");
-
     if (!connected) {
-        statusEl.innerText =
-            "Hello! I'm ready to interview you. (Demo Mode: Backend not connected)";
+        document.getElementById("question").innerText =
+            "Backend not connected.";
         return;
     }
 
-    statusEl.innerText = "✅ Backend Connected. Starting interview...";
-
-    const res = await fetch(`${API_BASE}/start-interview`, {
+    const res = await fetch(`${API_BASE}/interview/ask`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
             role: "Software Engineer",
             level: "Junior",
+            history: []
         }),
     });
 
     const data = await res.json();
-    document.getElementById("question").innerText = data.question;
+
+    document.getElementById("question").innerText =
+        data.question || "No question received";
 }
+
 
 document.addEventListener("DOMContentLoaded", startInterview);
