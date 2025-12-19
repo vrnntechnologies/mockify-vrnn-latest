@@ -89,6 +89,10 @@ def interview_ask(req: InterviewRequest):
         logger.error(f"/interview/ask error: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
+@app.get("/health")
+def health():
+    return {"status": "ok"}
+
 @app.post("/interview/analyze")
 def interview_analyze(req: ReportRequest):
     try:
