@@ -2,12 +2,12 @@
 
 window.APP_CONFIG = {
   // Backend base URL
-  API_BASE_URL: "http://localhost:8000",
+  API_BASE_URL: "/api",
 
   // AI mode:
   // "local"  -> Ollama (llama3)
   // "cloud"  -> Gemini API
-  AI_MODE: "local",
+  AI_MODE: "cloud",
 
   // App metadata (optional, future use)
   APP_NAME: "Mockify AI",
