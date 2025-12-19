@@ -22,29 +22,28 @@ async function checkBackend() {
 
 
 async function startInterview() {
-    const connected = await checkBackend();
+    try {
+        const res = await fetch("/api/interview/start", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" }
+        });
 
-    if (!connected) {
+        if (!res.ok) {
+            throw new Error("API failed");
+        }
+
+        const data = await res.json();
+
         document.getElementById("question").innerText =
-            "Backend not connected.";
-        return;
+            data.question || "No question returned";
+
+    } catch (err) {
+        console.error(err);
+        document.getElementById("question").innerText =
+            "Backend is reachable but interview API failed. Check console.";
     }
-
-    const res = await fetch(`${API_BASE}/interview/ask`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-            role: "Software Engineer",
-            level: "Junior",
-            history: []
-        }),
-    });
-
-    const data = await res.json();
-
-    document.getElementById("question").innerText =
-        data.question || "No question received";
 }
+
 
 
 document.addEventListener("DOMContentLoaded", startInterview);
