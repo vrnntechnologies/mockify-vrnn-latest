@@ -6,12 +6,7 @@ MODEL_NAME = "llama3"
 def ask_ollama(prompt: str) -> str:
     payload = {
         "model": MODEL_NAME,
-        "messages": [
-            {
-                "role": "user",
-                "content": prompt
-            }
-        ],
+        "prompt": prompt,
         "stream": False,
         "options": {
             "temperature": 0.7,
@@ -23,11 +18,7 @@ def ask_ollama(prompt: str) -> str:
         res = requests.post(OLLAMA_URL, json=payload, timeout=180)
         res.raise_for_status()
         data = res.json()
-        return data["message"]["content"].strip()
+        return data.get("response", "").strip()
 
-    except requests.exceptions.ConnectionError:
-        return "Error: Ollama is not running. Start it using `ollama serve`."
-    except requests.exceptions.Timeout:
-        return "Error: AI response timed out."
     except Exception as e:
         return f"Ollama Error: {str(e)}"
