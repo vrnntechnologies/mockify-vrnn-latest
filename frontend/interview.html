@@ -16,7 +16,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <!-- Ace Editor -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.32.7/ace.js"></script>
-<script src="./frontend/js/config.js"></script>
+<script src="./js/config.js"></script>
+
 
 <style>
     :root {
@@ -467,7 +468,9 @@
 
 <script>
 // const BACKEND_URL = "/api";
-const BACKEND_URL = window.APP_CONFIG.API_BASE_URL;
+// const BACKEND_URL = window.APP_CONFIG.API_BASE_URL;
+const BACKEND_URL = window.APP_CONFIG?.API_BASE_URL || "/api";
+
 
 const globalState = {
     view: 'dashboard',
