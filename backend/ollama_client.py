@@ -2,7 +2,7 @@ import requests
 import json
 
 # Configuration
-OLLAMA_URL = "http://localhost:11434/api/generate"
+OLLAMA_URL = "http://ollama.com/api/generate"
 MODEL_NAME = "llama3.1:8b" 
 
 def ask_ollama(prompt: str) -> str:

@@ -21,7 +21,7 @@ CORS(app)
 UPLOAD_FOLDER = 'uploads'
 HISTORY_FILE = 'resume_analysis_history.json'
 ALLOWED_EXTENSIONS = {'txt', 'pdf', 'docx'}
-OLLAMA_API_URL = "http://localhost:11434/api/generate"
+OLLAMA_API_URL = "http://ollama.com/api/generate"
 MODEL_NAME = "llama3" 
 
 if not os.path.exists(UPLOAD_FOLDER):
