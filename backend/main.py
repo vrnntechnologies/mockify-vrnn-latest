@@ -81,14 +81,11 @@ def get_stats():
     return load_stats()
 
 @app.post("/interview/ask")
-def interview_ask(req: InterviewRequest):
-    try:
-        final_prompt = build_prompt(req.prompt, req.type, req.context)
-        reply = ask_ollama(final_prompt)
-        return {"reply": reply}
-    except Exception as e:
-        logger.error(f"/interview/ask error: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
+def ask_interview(payload: dict):
+    return {
+        "reply": payload.get("prompt", "Tell me about yourself")
+    }
+
 
 @app.get("/health")
 def health():

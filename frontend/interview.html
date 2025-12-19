@@ -467,9 +467,9 @@
 </div>
 
 <script>
-// const BACKEND_URL = "/api";
+const BACKEND_URL = "/api";
 // const BACKEND_URL = window.APP_CONFIG.API_BASE_URL;
-const BACKEND_URL = window.APP_CONFIG?.API_BASE_URL || "/api";
+// const BACKEND_URL = window.APP_CONFIG?.API_BASE_URL || "/api";
 
 
 const globalState = {
@@ -826,22 +826,44 @@ function speak(text) {
 
 async function startAIConversation() {
     const prompt = `Start interview for ${globalState.role} at ${globalState.company}, round is ${globalState.round}. Welcome ${globalState.candidateName}.`;
+
     try {
         const res = await fetch(`${BACKEND_URL}/interview/ask`, {
             method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({ prompt: prompt, type: 'chat', context: getContext() }) 
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                prompt: prompt,
+                type: 'chat',
+                context: getContext()
+            })
         });
-        if(!res.ok) throw new Error("Backend offline");
+
+        // 🔍 Log real backend response
+        if (!res.ok) {
+            const text = await res.text();
+            throw new Error(`Backend error ${res.status}: ${text}`);
+        }
+
         const data = await res.json();
+
+        if (!data.reply) {
+            throw new Error("Invalid backend response: 'reply' missing");
+        }
+
         addTranscript('AI', data.reply);
         speak(data.reply);
+
     } catch (e) {
-        console.error(e);
-        addTranscript('AI', "Hello! I'm ready to interview you. (Demo Mode: Backend not connected).");
+        console.error("AI Conversation Error:", e);
+        addTranscript(
+            'AI',
+            "Backend reached but returned an error. Check console for details."
+        );
     }
+
     initSpeech();
 }
+
 
 function initSpeech() {
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
