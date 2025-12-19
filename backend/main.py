@@ -12,7 +12,14 @@ from prompt_router import build_prompt
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-app = FastAPI()
+#app = FastAPI()
+app = FastAPI(
+    title="Mockify API",
+    docs_url="/docs",
+    openapi_url="/openapi.json",
+    root_path="/api"
+)
+
 
 app.add_middleware(
     CORSMiddleware,
