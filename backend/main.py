@@ -87,15 +87,16 @@ def get_stats():
 #     }
 
 @app.post("/interview/ask")
-def ask_interview(req: InterviewRequest):
+def ask_interview(payload: dict):
     try:
-        logger.info("Interview question requested")
+        prompt = payload.get("prompt", "")
+        prompt_type = payload.get("type", "chat")
+        context = payload.get("context", {})
 
-        final_prompt = build_prompt(
-            user_input=req.prompt,
-            prompt_type=req.type,
-            context=req.context
-        )
+        logger.info(f"Interview ask | type={prompt_type}")
+
+        # IMPORTANT: positional args only
+        final_prompt = build_prompt(prompt, prompt_type, context)
 
         reply = ask_ollama(final_prompt)
 
@@ -104,6 +105,7 @@ def ask_interview(req: InterviewRequest):
     except Exception as e:
         logger.error(f"/interview/ask error: {e}")
         raise HTTPException(status_code=500, detail="AI generation failed")
+
 
 
 
