@@ -915,7 +915,7 @@ function initSpeech() {
              return; 
         }
 
-        const prompt = `Candidate Answer: ${text}. Reply and ask next question.`;
+        const prompt = `Candidate: "${text}"`;
         try {
             const res = await fetch(`${BACKEND_URL}/interview/ask`, {
                 method: 'POST',

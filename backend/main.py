@@ -81,10 +81,24 @@ def get_stats():
     return load_stats()
 
 @app.post("/interview/ask")
-def ask_interview(payload: dict):
-    return {
-        "reply": payload.get("prompt", "Tell me about yourself")
-    }
+def ask_interview(payload: InterviewRequest):
+    try:
+        # 1. Build the system prompt using your existing router
+        # This injects the "interviewer" persona so Llama knows how to behave
+        final_prompt = build_prompt(payload.prompt, payload.type, payload.context)
+        
+        # 2. Send to Ollama (Llama 3.1)
+        ai_reply = ask_ollama(final_prompt)
+        
+        # 3. Return only the AI's response
+        return {
+            "reply": ai_reply
+        }
+    except Exception as e:
+        logger.error(f"Error generating response: {e}")
+        return {
+            "reply": "I apologize, I missed that. Could you repeat?"
+        }
 
 
 @app.get("/health")
