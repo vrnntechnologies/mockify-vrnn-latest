@@ -824,7 +824,7 @@ function speak(text) {
     document.getElementById('ai-status').classList.add('text-indigo-400');
 }
 
-async function startAIConversation() {
+/*async function startAIConversation() {
     const prompt = `Start interview for ${globalState.role} at ${globalState.company}, round is ${globalState.round}. Welcome ${globalState.candidateName}.`;
 
     try {
@@ -862,8 +862,46 @@ async function startAIConversation() {
     }
 
     initSpeech();
-}
+}*/
 
+async function startAIConversation() {
+    const prompt = `You are a professional interview panelist.
+
+    Company: ${globalState.company}
+    Role: ${globalState.role}
+    Round: ${globalState.round}
+    Difficulty: ${globalState.difficulty}
+    Persona: ${globalState.persona}
+
+    Rules:
+        - Ask ONLY one interview question
+        - Do NOT welcome the candidate
+        - Do NOT repeat instructions
+        - Do NOT repeat previous questions
+        - Do NOT explain anything
+        - Ask the FIRST interview question now
+    `;
+
+    try {
+        const res = await fetch(`${BACKEND_URL}/interview/ask`, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({prompt})
+        });
+
+        if (!res.ok) throw new Error("Backend error");
+
+        const data = await res.json();
+        addTranscript('AI', data.reply);
+        speak(data.reply);
+
+    } catch (e) {
+        console.error(e);
+        addTranscript('AI', "Unable to start interview.");
+    }
+
+    initSpeech();
+}
 
 function initSpeech() {
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -915,7 +953,26 @@ function initSpeech() {
              return; 
         }
 
-        const prompt = `Candidate Answer: ${text}. Reply and ask next question.`;
+        // const prompt = `Candidate Answer: ${text}. Reply and ask next question.`;
+        const prompt = `You are interviewing a candidate.
+
+            Company: ${globalState.company}
+            Role: ${globalState.role}
+            Round: ${globalState.round}
+
+            Conversation so far:
+            ${globalState.transcript.join("\n")}
+
+            Candidate's latest answer:
+                "${text}"
+
+            Rules:
+                - Ask the NEXT relevant interview question
+                - Ask ONLY one question
+                - Do NOT repeat the candidate's answer
+                - Do NOT repeat instructions
+            `;
+
         try {
             const res = await fetch(`${BACKEND_URL}/interview/ask`, {
                 method: 'POST',
