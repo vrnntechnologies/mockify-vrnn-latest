@@ -1,7 +1,7 @@
 import requests
 
 OLLAMA_URL = "http://127.0.0.1:11434/api/generate"
-MODEL_NAME = "llama3"
+MODEL_NAME = "mistral"
 
 def ask_ollama(prompt: str) -> str:
     payload = {
