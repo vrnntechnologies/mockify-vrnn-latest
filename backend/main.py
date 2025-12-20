@@ -80,11 +80,31 @@ class ReportRequest(BaseModel):
 def get_stats():
     return load_stats()
 
+# @app.post("/interview/ask")
+# def ask_interview(payload: dict):
+#     return {
+#         "reply": payload.get("prompt", "Tell me about yourself")
+#     }
+
 @app.post("/interview/ask")
-def ask_interview(payload: dict):
-    return {
-        "reply": payload.get("prompt", "Tell me about yourself")
-    }
+def ask_interview(req: InterviewRequest):
+    try:
+        logger.info("Interview question requested")
+
+        final_prompt = build_prompt(
+            user_input=req.prompt,
+            prompt_type=req.type,
+            context=req.context
+        )
+
+        reply = ask_ollama(final_prompt)
+
+        return {"reply": reply.strip()}
+
+    except Exception as e:
+        logger.error(f"/interview/ask error: {e}")
+        raise HTTPException(status_code=500, detail="AI generation failed")
+
 
 
 @app.get("/health")
