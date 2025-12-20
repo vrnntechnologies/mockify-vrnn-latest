@@ -93,18 +93,19 @@ def ask_interview(payload: dict):
         prompt_type = payload.get("type", "chat")
         context = payload.get("context", {})
 
-        logger.info(f"Interview ask | type={prompt_type}")
-
-        # IMPORTANT: positional args only
         final_prompt = build_prompt(prompt, prompt_type, context)
 
         reply = ask_ollama(final_prompt)
 
-        return {"reply": reply.strip()}
+        if not reply:
+            return {"reply": "Can you tell me about yourself?"}
+
+        return {"reply": reply}
 
     except Exception as e:
-        logger.error(f"/interview/ask error: {e}")
-        raise HTTPException(status_code=500, detail="AI generation failed")
+        logger.error(f"/interview/ask error: {e}", exc_info=True)
+        return {"reply": "Let’s start with: tell me about yourself."}
+
 
 
 
